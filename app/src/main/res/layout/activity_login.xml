@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/toolbarLogin"
+        android:layout="@layout/toolbar_login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="470sp"
+        android:layout_height="205sp"
+        app:cardElevation="12sp"
+        app:cardCornerRadius="3sp"
+        android:layout_margin="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarLogin">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtLoginTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/titleLoginLogin"
+                android:textSize="18sp"
+                android:layout_gravity="center"
+                android:textAlignment="center"/>
+
+            <TextView
+                android:id="@+id/txtLoginId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/titleLoginId"
+                android:textSize="16sp"
+                android:layout_gravity="center"
+                android:textAlignment="center"/>
+
+            <EditText
+                android:id="@+id/edtLoginId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/edtLoginId"
+                android:singleLine="true"
+                android:minWidth="200sp"
+                android:minHeight="48sp"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/txtLoginPasswd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/titleLoginPasswd"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:textSize="16sp"/>
+
+            <EditText
+                android:id="@+id/edtLoginPasswd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/edtLoginPasswd"
+                android:minWidth="200sp"
+                android:minHeight="48sp"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/purple_200"
+                android:minHeight="48sp"
+                android:minWidth="200sp"
+                android:text="@string/btnLogin"
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                android:textAlignment="center"/>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
