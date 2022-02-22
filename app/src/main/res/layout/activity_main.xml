@@ -130,7 +130,7 @@
                     android:layout_gravity="center"
                     android:minWidth="0dp"
                     android:minHeight="48dp"
-                    android:onClick="radioClicked">
+                     >
                 </RadioButton>
                 <EditText
                     android:id="@+id/edtRun1"
@@ -203,7 +203,7 @@
                     android:minHeight="48dp"
                     android:minWidth="0dp"
                     android:layout_gravity="center"
-                    android:onClick="radioClicked">
+                     >
                 </RadioButton>
                 <EditText
                     android:id="@+id/edtRun3"
@@ -276,7 +276,7 @@
                     android:minHeight="48dp"
                     android:minWidth="0dp"
                     android:layout_gravity="center"
-                    android:onClick="radioClicked">
+                     >
                 </RadioButton>
                 <EditText
                     android:id="@+id/edtRun5"
@@ -349,7 +349,7 @@
                     android:minHeight="48dp"
                     android:minWidth="0dp"
                     android:layout_gravity="center"
-                    android:onClick="radioClicked">
+                     >
                 </RadioButton>
                 <EditText
                     android:id="@+id/edtRun7"
@@ -422,7 +422,7 @@
                     android:minHeight="48dp"
                     android:minWidth="0dp"
                     android:layout_gravity="center"
-                    android:onClick="radioClicked">
+                     >
                 </RadioButton>
                 <EditText
                     android:id="@+id/edtRun9"
@@ -495,7 +495,7 @@
                     android:minHeight="48dp"
                     android:minWidth="0dp"
                     android:layout_gravity="center"
-                    android:onClick="radioClicked">
+                     >
                 </RadioButton>
                 <EditText
                     android:id="@+id/edtRun11"
@@ -568,7 +568,7 @@
                     android:minHeight="48dp"
                     android:minWidth="0dp"
                     android:layout_gravity="center"
-                    android:onClick="radioClicked">
+                     >
                 </RadioButton>
                 <EditText
                     android:id="@+id/edtRun13"
@@ -641,7 +641,7 @@
                     android:minHeight="48dp"
                     android:minWidth="0dp"
                     android:layout_gravity="center"
-                    android:onClick="radioClicked">
+                     >
                 </RadioButton>
                 <EditText
                     android:id="@+id/edtRun15"
@@ -714,7 +714,7 @@
                     android:minHeight="48dp"
                     android:minWidth="0dp"
                     android:layout_gravity="center"
-                    android:onClick="radioClicked">
+                     >
                 </RadioButton>
                 <EditText
                     android:id="@+id/edtRun17"
@@ -787,7 +787,7 @@
                     android:minHeight="48dp"
                     android:minWidth="0dp"
                     android:layout_gravity="center"
-                    android:onClick="radioClicked">
+                     >
                 </RadioButton>
                 <EditText
                     android:id="@+id/edtRun19"
@@ -860,7 +860,7 @@
                     android:minHeight="48dp"
                     android:minWidth="0dp"
                     android:layout_gravity="center"
-                    android:onClick="radioClicked">
+                     >
                 </RadioButton>
                 <EditText
                     android:id="@+id/edtRun21"
@@ -933,7 +933,7 @@
                     android:minHeight="48dp"
                     android:minWidth="0dp"
                     android:layout_gravity="center"
-                    android:onClick="radioClicked">
+                     >
                 </RadioButton>
                 <EditText
                     android:id="@+id/edtRun23"
@@ -1006,7 +1006,7 @@
                     android:minHeight="48dp"
                     android:minWidth="0dp"
                     android:layout_gravity="center"
-                    android:onClick="radioClicked">
+                     >
                 </RadioButton>
                 <EditText
                     android:id="@+id/edtRun25"
@@ -1079,7 +1079,7 @@
                     android:minHeight="48dp"
                     android:minWidth="0dp"
                     android:layout_gravity="center"
-                    android:onClick="radioClicked">
+                     >
                 </RadioButton>
                 <EditText
                     android:id="@+id/edtRun27"
@@ -1152,7 +1152,7 @@
                     android:minHeight="48dp"
                     android:minWidth="0dp"
                     android:layout_gravity="center"
-                    android:onClick="radioClicked">
+                     >
                 </RadioButton>
                 <EditText
                     android:id="@+id/edtRun29"
@@ -1225,7 +1225,7 @@
                     android:minHeight="48dp"
                     android:minWidth="0dp"
                     android:layout_gravity="center"
-                    android:onClick="radioClicked">
+                     >
                 </RadioButton>
                 <EditText
                     android:id="@+id/edtRun31"
@@ -1298,7 +1298,7 @@
                     android:minHeight="48dp"
                     android:minWidth="0dp"
                     android:layout_gravity="center"
-                    android:onClick="radioClicked">
+                     >
                 </RadioButton>
                 <EditText
                     android:id="@+id/edtRun33"
@@ -1371,7 +1371,7 @@
                     android:minHeight="48dp"
                     android:minWidth="0dp"
                     android:layout_gravity="center"
-                    android:onClick="radioClicked">
+                     >
                 </RadioButton>
                 <EditText
                     android:id="@+id/edtRun35"
@@ -1444,7 +1444,7 @@
                     android:minHeight="48dp"
                     android:minWidth="0dp"
                     android:layout_gravity="center"
-                    android:onClick="radioClicked">
+                     >
                 </RadioButton>
                 <EditText
                     android:id="@+id/edtRun37"
@@ -1518,7 +1518,7 @@
                     android:minHeight="48dp"
                     android:minWidth="0dp"
                     android:layout_gravity="center"
-                    android:onClick="radioClicked">
+                     >
                 </RadioButton>
                 <EditText
                     android:id="@+id/edtRun39"
