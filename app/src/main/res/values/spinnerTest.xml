@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="test-spin">
+        <item>Julien</item>
+        <item>Alex</item>
+        <item>Nathan</item>
+        <item>Théo</item>
+        <item>William</item>
+        <item>Erwan</item>
+    </string-array>
+</resources>

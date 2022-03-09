@@ -25,17 +25,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onBtnPrepare(v: View){
-        val toast = Toast.makeText(this, R.string.toastPrepare, Toast.LENGTH_SHORT)
-        toast.show()
+        val toast = Toast.makeText(this, R.string.toastPrepare, Toast.LENGTH_SHORT) // Création d'une infobulle
+        toast.show() // Affichage de l'infobulle de message
         val buttons = arrayListOf<Button>(
             findViewById(R.id.btnAVM),
             findViewById(R.id.btnReady),
             findViewById(R.id.btnGo)
-        )
-        buttons[0].isEnabled=true
-        buttons[1].isEnabled=false
-        buttons[2].isEnabled=false
-    }
+        ) //création d'une liste contenant les différents boutons de gestion de course
+        buttons[0].isEnabled=true // Activation du bouton "À vos marques!"
+        buttons[1].isEnabled=false // Désactivation du bouton "Prêt !"
+        buttons[2].isEnabled=false //Désactivation du bouton "Partez !"
+    } // Fonction exécutée lors du clic sur le bouton "Préparation
 
     fun onBtnAVM(v: View){
         val toast = Toast.makeText(this, R.string.toastAVM, Toast.LENGTH_SHORT)

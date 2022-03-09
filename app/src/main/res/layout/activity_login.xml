@@ -82,7 +82,7 @@
                 android:id="@+id/btnLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/purple_200"
+                android:backgroundTint="@color/red_200"
                 android:minHeight="48sp"
                 android:minWidth="200sp"
                 android:text="@string/btnLogin"
