@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import fr.falling_knife.lab.pmv.utils.TcpClient
 
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     private var spinnerRunners: ArrayList<Spinner> = ArrayList<Spinner>()
+    private val dataDial = TcpClient("192.168.0.1", 2314)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

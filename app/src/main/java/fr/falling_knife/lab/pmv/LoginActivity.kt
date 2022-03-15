@@ -7,10 +7,13 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import fr.falling_knife.lab.pmv.utils.TcpClient
 
 const val EXTRA_MESSAGE = "fr.falling_knife.lab.pmv.MESSAGE"
 
 class LoginActivity: AppCompatActivity(){
+
+    val authCheck = TcpClient("192.168.0.1", 2314)
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
