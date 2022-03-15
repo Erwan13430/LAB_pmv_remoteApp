@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="test-spin">
+    <string-array name="testspin">
         <item>Julien</item>
         <item>Alex</item>
         <item>Nathan</item>

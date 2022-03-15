@@ -75,7 +75,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/lineTitleNumber"
+            app:layout_constraintEnd_toEndOf="@id/lineTitle"
             app:layout_constraintStart_toEndOf="@+id/btnGo"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -89,16 +89,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/space"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/lineTitleNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:layout_constraintStart_toEndOf="@id/lineTitle"
-            app:layout_constraintTop_toTopOf="parent"
-            android:textSize="32sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

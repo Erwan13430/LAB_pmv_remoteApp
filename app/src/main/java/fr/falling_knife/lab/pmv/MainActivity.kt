@@ -5,14 +5,30 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 
-class MainActivity : AppCompatActivity() {
+
+class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+
+    private var spinnerRunners: ArrayList<Spinner> = ArrayList<Spinner>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initIHM()
         println("Test")
+
+        for(i in 1..40){
+            this.spinnerRunners.add(findViewById(resources.getIdentifier("spinRun" + i, "id", packageName)))
+        }
+        var test: Array<String> = arrayOf("test", "test2", "testé")
+        val ar: ArrayAdapter<String> = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, test)
+
+        spinnerRunners.iterator().forEach {
+            it.adapter = ar
+            it.onItemSelectedListener = this
+        }
+
     }
+
 
     fun onBtnSelect(v: View){
         val toast = Toast.makeText(this, R.string.toastSelect, Toast.LENGTH_LONG)
@@ -93,18 +109,21 @@ class MainActivity : AppCompatActivity() {
         buttons[0].isEnabled=true
     }
 
-    private fun getRadioButtons() : ArrayList<RadioButton>{
+    private fun getSelectButtons() : ArrayList<RadioButton>{
         val radios = arrayListOf<RadioButton>()
 
         for(i in 1..20 step 1)
-            radios.add(findViewById(resources.getIdentifier("rdb$i", "view", this.packageName)))
+            radios.add(findViewById(resources.getIdentifier("rdBtn$i", "id", this.packageName)))
 
         return radios
     }
 
     fun radioClicked(v: View){
         var id: Int? = null
-        val radios = getRadioButtons()
+        val radios = getSelectButtons()
+        println("$v")
+
+        //radios.iterator().forEach { println("$it") }
         when(v){
             radios[0] -> id = 1
             radios[1] -> id = 2
@@ -128,20 +147,35 @@ class MainActivity : AppCompatActivity() {
             radios[19] -> id = 20
         }
 
-        val lineText = findViewById<TextView>(R.id.lineTitleNumber)
-        lineText.text = id.toString()
-        disableButtons(id!!.toInt())
-    }
-
-    private fun disableButtons(id: Int){
-        val radioButtons = getRadioButtons()
-
-        for(i in radioButtons){
-            if(i != radioButtons[id])
-                i.isChecked=false
+        val lineText = findViewById<TextView>(R.id.lineTitle)
+        var text: String = getText(R.string.lineNumber) as String
+        lineText.text = text + " " + id?.toString()
+        println(id?.toString())
+        if (id != null) {
+            disableButtons(id.toInt(), radios)
         }
     }
 
+    private fun disableButtons(id: Int, radios: ArrayList<RadioButton>){
+        radios.iterator().forEach {
+            if(it != radios[id-1]){
+                it.isChecked = false
+                println("$it disabled")
+            }else{
+                it.isChecked = true
+            }
+        }
+    }
+
+    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+        val item: String = p0?.getItemAtPosition(p2).toString()
+        if(item != "test")
+            Toast.makeText(p0?.context, "Selected: " + item, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onNothingSelected(p0: AdapterView<*>?) {
+    }
 
 }
+
 

@@ -65,7 +65,8 @@
                 android:text="@string/titleLoginPasswd"
                 android:layout_gravity="center"
                 android:textAlignment="center"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                android:maxLines="1"/>
 
             <EditText
                 android:id="@+id/edtLoginPasswd"
@@ -76,7 +77,9 @@
                 android:minHeight="48sp"
                 android:layout_gravity="center"
                 android:textAlignment="center"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:password="true"
+                android:singleLine="true"/>
 
             <Button
                 android:id="@+id/btnLogin"
