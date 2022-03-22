@@ -35,3 +35,25 @@ Permet de transmettre la liste des coureurs sélectionnés pour une course (bi-d
   }
 }
 ```
+
+#### transfertAllRunners
+
+Permet de transmettre l'ensemble des coureurs disponibles à l'application (uni-directionnel)
+
+```json
+{
+  "command": "transfertAllRunners",
+  "data": {
+    "runnersCnt": <nombre de coureurs de la session>,
+    "runner1": {
+      "id": <id du coureur dans la BDD>,
+      "name": "<Nom + Initiale du prénom du coureur>"
+    },
+    "runner2": {
+      "id": <id coureur dans la BDD>,
+      "name": "<Nom + Initiale du prénom du coureur>"
+    },
+    ...
+  }
+}
+```
