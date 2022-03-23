@@ -57,3 +57,85 @@ Permet de transmettre l'ensemble des coureurs disponibles à l'application (uni-
   }
 }
 ```
+
+#### timeRun
+
+Permet de transmettre le temps d'une course spécifiée (bi-directionnel)
+
+```json
+{
+  "command": "timeRun",
+  "data": {
+    "id": <id de la course>,
+    "time1": "<temps sous forme de chaîne de caractères>",
+    "wind1": "<vent sous forme de chaîne de caractères>",
+    "speed1": "<vitesse sous forme de chaîne de caractères>",
+    "time2": "<temps sous forme de chaine de caractères>",
+    "wind2": "<vent sous forme de chaîne de caractères>",
+    "speed2": "<vitesse sous forme de chaîne de caractères>"
+  }
+}
+```
+
+#### getCsv
+
+Permet de demander un fichier CSV contenant l'ensemble de la course (uni-directionnel)
+
+```json
+{
+  "command": "getCsv"
+}
+```
+
+#### transfertCsv
+
+Permet de transmettre les données pour le fichier CSV à la tablette (uni-directionnel)
+
+```json
+{
+  "command": "transfertCsv",
+  "data": {
+    "runnersCnt": <nombre de coureurs>,
+    "runner1": {
+      "idRun": <id course>,
+      "name": "<nom coureur>",
+      "time": "<temps en CDC>",
+      "wind": "<vent en CDC>",
+      "speed": "<vitesse en CDC>"
+    },
+    "runner2": {
+      "idRun": <id course>,
+      "name": "<nom coureur>",
+      "time": "<temps en CDC>",
+      "wind": "<vent en CDC>",
+      "speed": "<vitesse en CDC>"
+    },
+    ...
+  }
+}
+```
+
+#### authCheck
+
+Permet de vérifier les identifiants de connection (bi-directionnel)
+
+Cas Application vers Raspberry:
+```json
+{
+  "command": "authCheck",
+  "data": {
+    "login": "<identifiant>",
+    "pass": "<mot de passe>"
+  }
+}
+```
+
+Cas Raspberry vers Application
+```json
+{
+  "command": "authCheck",
+  "data": {
+    "authState": "<pass or fail>"
+  }
+}
+```
