@@ -135,7 +135,7 @@ Cas Raspberry vers Application
 {
   "command": "authCheck",
   "data": {
-    "authState": "<pass or fail>"
+    "success": <O ou 1 si réussi>
   }
 }
 ```
