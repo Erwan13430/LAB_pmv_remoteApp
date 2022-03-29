@@ -139,3 +139,16 @@ Cas Raspberry vers Application
   }
 }
 ```
+
+#### btnPrep
+
+Permet de transmettre l'état d'un bouton lors d'une action
+
+```json
+{
+  "command": "btnPrep",
+  "data": {
+    "state": <0 ou 1>
+  }
+}
+```
