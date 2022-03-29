@@ -46,7 +46,7 @@ Permet de transmettre l'ensemble des coureurs disponibles à l'application (uni-
   "data": {
     "runnersCnt": <nombre de coureurs de la session>,
     "runner1": {
-      "id": <id du coureur dans la BDD>,
+      "id": <id coureur dans la BDD>,
       "name": "<Nom + Initiale du prénom du coureur>"
     },
     "runner2": {
