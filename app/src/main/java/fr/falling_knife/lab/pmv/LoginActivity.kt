@@ -15,7 +15,7 @@ import java.net.Socket
 import java.util.*
 
 
-class LoginActivity: AppCompatActivity(), Serializable{
+class LoginActivity: AppCompatActivity(){
 
 
     private val SERVER_IP: String = "192.168.1.26"

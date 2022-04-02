@@ -11,10 +11,6 @@
         android:roundIcon="@mipmap/app_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PMV">
-        <service
-            android:name=".services.WebService"
-            android:enabled="true"
-            android:exported="true"></service>
 
         <activity
             android:name=".LoginActivity"
