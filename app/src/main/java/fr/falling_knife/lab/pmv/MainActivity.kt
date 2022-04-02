@@ -4,13 +4,39 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import fr.falling_knife.lab.pmv.utils.TcpClient
+import android.os.Process
 
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     private var spinnerRunners: ArrayList<Spinner> = ArrayList<Spinner>()
-    private val dataDial = TcpClient("192.168.0.1", 2314)
+    private var backButtonPressedTime: Long = 0
+    private lateinit var backToast: Toast
+    //private val dataDial = TcpClient("192.168.0.1", 2314)
+
+    private fun exitApp(){
+        LoginActivity.exitApp()
+        finish()
+    }
+
+    override fun onDestroy() {
+        Process.killProcess(Process.myPid())
+        super.onDestroy()
+    }
+
+    override fun onBackPressed() {
+
+        if(backButtonPressedTime + 2000 > System.currentTimeMillis()) {
+            backToast.cancel()
+            moveTaskToBack(false)
+            exitApp()
+            return
+        }else{
+            backToast = Toast.makeText(baseContext,"Recliquez pour quitter", Toast.LENGTH_SHORT)
+            backToast.show()
+        }
+        backButtonPressedTime = System.currentTimeMillis()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
