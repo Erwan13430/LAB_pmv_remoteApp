@@ -53,16 +53,14 @@ class CommunicationProtocol(address: String, port: Int){
                             """"value" : ${data[1]}""" +
                             "}"
 
-                "btnPrep" -> trame +=
+                "btnState" -> trame +=
                     "," +
                             """"data":{""" +
-                            """"value": ${data[1].toInt()}""" +
-                            "}"
-
-                "btnAVM" -> trame +=
-                    "," +
-                            """"data":{""" +
-                            """"value": ${data[1].toInt()}""" +
+                            """"btnSess": ${data[1].toInt()},""" +
+                            """"btnPrep": ${data[2].toInt()},""" +
+                            """"btnAVM": ${data[3].toInt()},""" +
+                            """"btnReady": ${data[4].toInt()},""" +
+                            """"btnGo": ${data[5].toInt()}""" +
                             "}"
             }
             trame += "}"

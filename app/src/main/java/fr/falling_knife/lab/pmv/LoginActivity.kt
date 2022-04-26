@@ -18,7 +18,7 @@ import java.util.*
 class LoginActivity: AppCompatActivity(){
 
 
-    private val SERVER_IP: String = "192.168.1.26"
+    private val SERVER_IP: String = "192.168.11.226"
     private val SERVER_PORT: Int = 2314
     private var threadMain: Thread? = null
 
@@ -115,10 +115,6 @@ class LoginActivity: AppCompatActivity(){
                         if (readMessage.isNotEmpty()) {
                             val nb = readMessage.length
                             if (nb > 0) {
-                                /*
-                                output.write(readMessage.toString() + "\n")
-                                output.flush()
-                                */
                                 println(readMessage.toString())
                                 when(CommunicationProtocol.decodeData(readMessage.toString())){
                                     "authTrue" -> runOnUiThread(Runnable {
