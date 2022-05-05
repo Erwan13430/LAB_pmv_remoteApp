@@ -152,7 +152,8 @@ Permet de transmettre l'état des boutons lors d'une action
     "btnPrep": <0 ou 1>,
     "btnAVM": <0 ou 1>,
     "btnReady": <0 ou 1>,
-    "btnGo": <0 ou 1>
+    "btnGo": <0 ou 1>,
+    "btnStop": <0 ou 1>
   }
 }
 ```
