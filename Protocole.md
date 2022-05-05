@@ -60,7 +60,7 @@ Permet de transmettre l'ensemble des coureurs disponibles à l'application (uni-
 
 #### timeRun
 
-Permet de transmettre le temps d'une course spécifiée (bi-directionnel)
+Permet de transmettre le temps d'une course spécifiée (uni-directionnel)
 
 ```json
 {
