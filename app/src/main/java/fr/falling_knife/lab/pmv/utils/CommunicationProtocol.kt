@@ -1,70 +1,60 @@
 package fr.falling_knife.lab.pmv.utils
 
-
 import org.json.JSONObject
 import org.json.JSONTokener
-import java.util.*
 
-class CommunicationProtocol(address: String, port: Int){
+enum class RequestType{
+    BUTTON,
+    LOGIN,
+    USER_SELECT
+}
 
-    companion object{
-        fun decodeData(data: String): String{
-            val jsonObject = JSONTokener(data).nextValue() as JSONObject
-            val command = jsonObject.getString("command")
-            var returnVal: String = ""
+class CommunicationProtocol {
 
-            when(command){
-                "authCheck" -> {
-                    val jsonData = jsonObject.getJSONObject("data")
-                    val authSuccess = jsonData.getInt("success")
-                    //responseAuth = if(authSuccess == 0 ) false else true
-                    returnVal = if(authSuccess == 0) "authFalse" else "authTrue"
-                }
-            }
-                return returnVal
+    fun prepareRequest(type: RequestType, datas: ArrayList<String>): String{
+        var request: String = "{"+
+                """"command": """
+        when(type){
+            RequestType.LOGIN -> request += """"authCheck",""" +
+                    """"data": {""" +
+                    """"login": "${datas[0]}",""" +
+                    """"pass": "${datas[1]}"""" +
+                    "}"
+            RequestType.BUTTON -> request += """"btnState",""" +
+                    """"data": {""" +
+                    """"btnSess": ${datas[0]},""" +
+                    """"btnPrep": ${datas[1]},""" +
+                    """"btnAVM:" ${datas[2]},""" +
+                    """"btnReady": ${datas[3]},""" +
+                    """"btnGo": ${datas[4]}""" +
+                    "}"
+            RequestType.USER_SELECT -> request += """"transfertRunner",""" +
+                    """"data": {""" +
+                    """"id": ${datas[0]},""" +
+                    """"runners": [""" +
+                    "${datas[1]}, ${datas[2]}" +
+                    "]" +
+                    "}"
         }
 
-        fun prepareJson(data: ArrayList<String>): String {
-            var trame: String =
-                "{" +
-                        """"command" : "${data[0]}""""
-            when (data[0]) {
+        request += "}"
 
-                "transfertRunner" -> trame +=
-                    "," +
-                            """"data": {""" +
-                            """"id": "${data[1]}",""" +
-                            """"runners" : [""" +
-                            "${data[2].toInt()}," +
-                            "${data[3].toInt()}" +
-                            "]" +
-                            "}"
-
-                "authCheck" -> trame +=
-                    "," +
-                            """"data":{""" +
-                            """"login": "${data[1]}",""" +
-                            """"pass": "${data[2]}",""" +
-                            "}"
-
-                "btnStartSession" -> trame +=
-                    "," +
-                            """"data":{""" +
-                            """"value" : ${data[1]}""" +
-                            "}"
-
-                "btnState" -> trame +=
-                    "," +
-                            """"data":{""" +
-                            """"btnSess": ${data[1].toInt()},""" +
-                            """"btnPrep": ${data[2].toInt()},""" +
-                            """"btnAVM": ${data[3].toInt()},""" +
-                            """"btnReady": ${data[4].toInt()},""" +
-                            """"btnGo": ${data[5].toInt()}""" +
-                            "}"
-            }
-            trame += "}"
-            return trame
-        }
+        return request
     }
+
+    fun decodeData(data: String): String{
+        val jsonObject = JSONTokener(data).nextValue() as JSONObject
+        val command = jsonObject.getString("command")
+        var response: String = ""
+
+        when(command){
+            "authCheck" -> {
+                val jsonData = jsonObject.getJSONObject("data")
+                val authStatus = jsonData.getInt("success")
+                response = if(authStatus == 0) "authTrue" else "authFalse"
+            }
+        }
+        return response
+    }
+
 }
