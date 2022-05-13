@@ -9,7 +9,8 @@ import fr.falling_knife.lab.pmv.utils.CommunicationProtocol
 import fr.falling_knife.lab.pmv.utils.DataApp
 import fr.falling_knife.lab.pmv.utils.TcpClient
 
-class MainActivity: AppCompatActivity(), FragmentLogin.OnCheckConnectionSettings {
+class MainActivity: AppCompatActivity(), FragmentLogin.OnCheckConnectionSettings,
+    FragmentSession.OnSessionManagement {
 
     /* Initialisation du client TCP */
     private val _client: TcpClient = TcpClient(this)
@@ -32,5 +33,14 @@ class MainActivity: AppCompatActivity(), FragmentLogin.OnCheckConnectionSettings
             )).commit()
         } // if
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onSessionRunning(settings: DataApp) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onEndSession(settings: DataApp) {
+        TODO("Not yet implemented")
+        TODO("Ajouter fonction fermeture socket")
     }
 }

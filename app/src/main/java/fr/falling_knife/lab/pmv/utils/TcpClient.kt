@@ -6,13 +6,13 @@ import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.io.OutputStream
-import java.lang.Exception
 import java.net.Socket
+import kotlin.Exception
 
 class TcpClient(activity: MainActivity) {
 
     private var _activity: MainActivity = activity
-    private lateinit var _socket: Socket
+    private var _socket: Socket? = null
     private lateinit var _writer: OutputStream
     private lateinit var _reader: InputStream
     private val _protocol = CommunicationProtocol()
@@ -20,7 +20,10 @@ class TcpClient(activity: MainActivity) {
 
     fun authenticate(dataLogin: DataApp): String{
         val one = CoroutineScope(Dispatchers.IO).async {
-            login(dataLogin)
+            if(connectToServer(dataLogin))
+                login(dataLogin)
+            else
+                "CA MARCHE PO"
         }
         var response: String
         runBlocking {
@@ -33,10 +36,8 @@ class TcpClient(activity: MainActivity) {
         var response = "Nothing"
         try{
             val request = _protocol.prepareRequest(RequestType.LOGIN, arrayListOf(dataLogin.login, dataLogin.password))
-            connectToServer(dataLogin)
             _writer.write(request.toByteArray())
             response = readWithTimeout(TIMEOUT)
-            _socket.close()
         }catch (e: Exception){
             response = e.message.toString()
             println(response)
@@ -44,10 +45,17 @@ class TcpClient(activity: MainActivity) {
         return response
     }
 
-    private fun connectToServer(dataLogin: DataApp){
-        _socket = Socket(dataLogin.SERVER_ADDRESS, dataLogin.SERVER_PORT)
-        _writer = _socket.getOutputStream()
-        _reader = _socket.getInputStream()
+    private fun connectToServer(dataLogin: DataApp): Boolean{
+        return try{
+            if(_socket == null){
+                _socket = Socket(dataLogin.SERVER_ADDRESS, dataLogin.SERVER_PORT)
+                _writer = _socket!!.getOutputStream()
+                _reader = _socket!!.getInputStream()
+            }
+            _socket != null
+        }catch(e: Exception){
+            false
+        }
     }
 
     private fun readWithTimeout(time: Long): String{

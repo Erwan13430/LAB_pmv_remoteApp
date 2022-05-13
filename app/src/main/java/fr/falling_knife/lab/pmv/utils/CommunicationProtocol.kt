@@ -43,17 +43,22 @@ class CommunicationProtocol {
     }
 
     fun decodeData(data: String): String{
+        println(data)
         val jsonObject = JSONTokener(data).nextValue() as JSONObject
         val command = jsonObject.getString("command")
+        println(command)
         var response: String = ""
 
         when(command){
             "authCheck" -> {
                 val jsonData = jsonObject.getJSONObject("data")
+                println(jsonData)
                 val authStatus = jsonData.getInt("success")
-                response = if(authStatus == 0) "authTrue" else "authFalse"
+                println(authStatus)
+                response = if(authStatus == 1) "authTrue" else "authFalse"
             }
         }
+        println(response)
         return response
     }
 
