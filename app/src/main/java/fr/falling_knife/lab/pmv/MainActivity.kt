@@ -5,9 +5,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import fr.falling_knife.lab.pmv.fragments.FragmentLogin
 import fr.falling_knife.lab.pmv.fragments.FragmentSession
-import fr.falling_knife.lab.pmv.utils.CommunicationProtocol
-import fr.falling_knife.lab.pmv.utils.DataApp
-import fr.falling_knife.lab.pmv.utils.TcpClient
+import fr.falling_knife.lab.pmv.utils.*
 
 class MainActivity: AppCompatActivity(), FragmentLogin.OnCheckConnectionSettings,
     FragmentSession.OnSessionManagement {
@@ -42,5 +40,12 @@ class MainActivity: AppCompatActivity(), FragmentLogin.OnCheckConnectionSettings
     override fun onEndSession(settings: DataApp) {
         TODO("Not yet implemented")
         TODO("Ajouter fonction fermeture socket")
+    }
+
+    override fun onSendCommand(data: DataSend) {
+        when(data.mode){
+            SendAction.BUTTON -> _protocol.prepareRequest(RequestType.BUTTON, data.data)
+        }
+        TODO("Not yet implemented")
     }
 }

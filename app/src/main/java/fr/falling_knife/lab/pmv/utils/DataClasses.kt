@@ -7,3 +7,15 @@ data class DataApp(
     val SERVER_PORT: Int = 4444,
     var message: String = "Nothing"
 )
+
+enum class SendAction{
+    BUTTON,
+    RUN,
+    CSV,
+    CONTROL
+}
+
+data class DataSend(
+    val mode: SendAction,
+    val data: ArrayList<String>
+)
