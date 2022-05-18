@@ -157,3 +157,14 @@ Permet de transmettre l'état des boutons lors d'une action
   }
 }
 ```
+
+
+#### getControl
+
+Permet de reprendre la main en cas d'utilisation d'un périphérique de contrôle différent (bi-directionnel)
+
+```json
+{
+  "command": "getControl"
+}
+```
