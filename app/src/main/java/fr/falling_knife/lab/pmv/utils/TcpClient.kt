@@ -1,6 +1,8 @@
 package fr.falling_knife.lab.pmv.utils
 
 import fr.falling_knife.lab.pmv.MainActivity
+import fr.falling_knife.lab.pmv.R
+import fr.falling_knife.lab.pmv.fragments.FragmentSession
 import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.InputStream
@@ -17,10 +19,14 @@ class TcpClient(activity: MainActivity) {
     private lateinit var _reader: InputStream
     private val _protocol = CommunicationProtocol()
     private val TIMEOUT: Long = 1000
+    private var _endThread: Boolean = false
+    private var _end: Boolean = false
 
     fun authenticate(dataLogin: DataApp): String{
         val one = CoroutineScope(Dispatchers.IO).async {
-            if(connectToServer(dataLogin))
+            val state: Boolean = connectToServer(dataLogin)
+            println("Is connected: $state")
+            if(state)
                 login(dataLogin)
             else
                 "CA MARCHE PO"
@@ -52,8 +58,14 @@ class TcpClient(activity: MainActivity) {
                 _writer = _socket!!.getOutputStream()
                 _reader = _socket!!.getInputStream()
             }
-            _socket != null
+            println("Socket is ${_socket != null}")
+            println("Socket is ${_socket != null}")
+            println("Socket is ${_socket != null}")
+            true
         }catch(e: Exception){
+            println("Socket is planted")
+            println("Socket is planted")
+            println("Socket is planted")
             false
         }
     }
@@ -79,4 +91,23 @@ class TcpClient(activity: MainActivity) {
         } //if
         return response
     } //readWithTimeout
+
+    fun alwaysReadFromServer(){
+        _endThread = false
+        _end = false
+        CoroutineScope(Dispatchers.Main).launch(Dispatchers.IO){
+            while(!_end){
+                val response = readWithTimeout(TIMEOUT)
+                val lines = _protocol.decodeData(response)
+                if(lines.isNotEmpty()){
+                    _activity.runOnUiThread{
+                        when(lines) {
+                            "getControl" -> _activity?.onUpdateSession(ReceiveActions.CONTROL, arrayListOf())
+                        }
+                    }
+                }
+            }
+            _endThread = true
+        }
+    }
 }

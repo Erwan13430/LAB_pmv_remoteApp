@@ -34,6 +34,7 @@ class MainActivity: AppCompatActivity(), FragmentLogin.OnCheckConnectionSettings
     }
 
     override fun onSessionRunning(settings: DataApp) {
+        _client.alwaysReadFromServer()
         TODO("Not yet implemented")
     }
 
@@ -47,5 +48,11 @@ class MainActivity: AppCompatActivity(), FragmentLogin.OnCheckConnectionSettings
             SendAction.BUTTON -> _protocol.prepareRequest(RequestType.BUTTON, data.data)
         }
         TODO("Not yet implemented")
+    }
+
+    override fun onUpdateSession(type: ReceiveActions, data: ArrayList<String>) {
+        when(type) {
+            ReceiveActions.CONTROL -> { supportFragmentManager.findFragmentById(R.id.fragmentSession)?.view?.isEnabled = false}
+        }
     }
 }

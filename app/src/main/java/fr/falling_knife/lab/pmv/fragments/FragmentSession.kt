@@ -10,6 +10,7 @@ import android.widget.*
 import fr.falling_knife.lab.pmv.R
 import fr.falling_knife.lab.pmv.utils.DataApp
 import fr.falling_knife.lab.pmv.utils.DataSend
+import fr.falling_knife.lab.pmv.utils.ReceiveActions
 import fr.falling_knife.lab.pmv.utils.SendAction
 
 // TODO: Rename parameter arguments, choose names that match
@@ -76,6 +77,7 @@ class FragmentSession : Fragment() {
 
             //Récupération et initialisation des boutons radio
             val rdBtns: ArrayList<RadioButton> = getSelectButton(rootView)
+            initRadioButtons(rdBtns)
 
 
             //Récupération et initialisation des spinners
@@ -95,7 +97,7 @@ class FragmentSession : Fragment() {
         val radios = arrayListOf<RadioButton>()
 
         for(i in 1..20 step 1)
-            radios.add(view.findViewById(resources.getIdentifier("rdbBtn$i", "id", activity?.packageName)))
+            radios.add(view.findViewById(resources.getIdentifier("rdBtn$i", "id", activity?.packageName)))
         return radios
     }
 
@@ -151,8 +153,10 @@ class FragmentSession : Fragment() {
     }
 
     private fun initRadioButtons(rdBtns: ArrayList<RadioButton>){
-        rdBtns.iterator().forEach { it ->
-            it.setOnClickListener { rdButtonListener(rdBtns, it) }
+        for(i in 0 until rdBtns.count()){
+            rdBtns[i].setOnClickListener{
+                rdButtonListener(rdBtns, it)
+            }
         }
     }
 
@@ -164,6 +168,20 @@ class FragmentSession : Fragment() {
             }else{
                 id
             }
+        val lineText = activity?.findViewById<TextView>(R.id.lineTitle)
+        var text: String = activity?.getText(R.string.lineNumber) as String
+        lineText?.text = text + " " + id?.toString()
+        println(id?.toString())
+        id?.let {
+            disableButtons(id, rdBtns)
+        }
+    }
+
+    private fun disableButtons(id: Int, radios: ArrayList<RadioButton>){
+        radios.iterator().forEach {
+            it.isChecked = it == radios[id-1]
+            println("$it is ${it.isChecked}")
+        }
     }
 
     companion object {
@@ -192,5 +210,6 @@ class FragmentSession : Fragment() {
         fun onSessionRunning(settings: DataApp)
         fun onSendCommand(data: DataSend)
         fun onEndSession(settings: DataApp)
+        fun onUpdateSession(type: ReceiveActions, data: ArrayList<String>)
     }
 }
