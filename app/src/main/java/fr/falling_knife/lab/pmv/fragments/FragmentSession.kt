@@ -2,6 +2,7 @@ package fr.falling_knife.lab.pmv.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -88,6 +89,8 @@ class FragmentSession : Fragment() {
 
         } //if
 
+        Log.d("FragmentSession", "Starting onSessionRunning")
+        _listener.onSessionRunning(DataApp(_login!!, _password!!, _serverAddress!!, _serverPort!!.toInt(), "onSessionRunning"))
         return rootView
 
         // TODO: Appel listener onSession
@@ -171,7 +174,7 @@ class FragmentSession : Fragment() {
         val lineText = activity?.findViewById<TextView>(R.id.lineTitle)
         var text: String = activity?.getText(R.string.lineNumber) as String
         lineText?.text = text + " " + id?.toString()
-        println(id?.toString())
+        Log.d("FrgSess::ID", id!!.toString())
         id?.let {
             disableButtons(id, rdBtns)
         }
@@ -180,7 +183,7 @@ class FragmentSession : Fragment() {
     private fun disableButtons(id: Int, radios: ArrayList<RadioButton>){
         radios.iterator().forEach {
             it.isChecked = it == radios[id-1]
-            println("$it is ${it.isChecked}")
+            Log.d("FrgSess::Btn", "$it is ${it.isChecked}")
         }
     }
 

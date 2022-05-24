@@ -1,5 +1,6 @@
 package fr.falling_knife.lab.pmv.utils
 
+import android.util.Log
 import org.json.JSONObject
 import org.json.JSONTokener
 
@@ -43,28 +44,36 @@ class CommunicationProtocol {
     }
 
     fun decodeData(data: String): String{
-        println(data)
-        println(data)
-        println(data)
-        val jsonObject = JSONTokener(data).nextValue() as JSONObject
-        val command = jsonObject.getString("command")
-        println(command)
-        var response: String = ""
+        Log.d("decodeData1", data)
+        var command: String
+        var jsonObject: JSONObject
+        try{
+            jsonObject = JSONTokener(data).nextValue() as JSONObject
+            command = jsonObject.getString("command")
+            Log.d("decodeData2", command)
+        }catch(e: Exception){
+            Log.d("decodeData2E", data)
+            jsonObject = JSONTokener("{\"command\": \"NO JSON\"}").nextValue() as JSONObject
+            command = jsonObject.getString("command")
+        }
 
-        when(command){
+        return when(command){
             "authCheck" -> {
                 val jsonData = jsonObject.getJSONObject("data")
-                println(jsonData)
+                Log.d("decodeData3", jsonData.toString())
                 val authStatus = jsonData.getInt("success")
-                println(authStatus)
-                response = if(authStatus == 1) "authTrue" else "authFalse"
+                Log.d("decodeData4", authStatus.toString())
+                if(authStatus == 1) "authTrue" else "authFalse"
             }
             "getControl" -> {
-                response = "getControl"
+                Log.d("decodeData5", "getControl")
+                "getControl"
+            }
+            else -> {
+                Log.d("decodeData6", "REC UNKNOWN")
+                "UNKNOWN !"
             }
         }
-        println(response)
-        return response
     }
 
 }

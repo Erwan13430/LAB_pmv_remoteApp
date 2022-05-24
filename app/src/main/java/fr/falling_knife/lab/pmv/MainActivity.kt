@@ -35,19 +35,19 @@ class MainActivity: AppCompatActivity(), FragmentLogin.OnCheckConnectionSettings
 
     override fun onSessionRunning(settings: DataApp) {
         _client.alwaysReadFromServer()
-        TODO("Not yet implemented")
+        // TODO Not yet implemented
     }
 
     override fun onEndSession(settings: DataApp) {
-        TODO("Not yet implemented")
-        TODO("Ajouter fonction fermeture socket")
+        // TODO Not yet implemented
+        // TODO Ajouter fonction fermeture socket
     }
 
     override fun onSendCommand(data: DataSend) {
         when(data.mode){
             SendAction.BUTTON -> _protocol.prepareRequest(RequestType.BUTTON, data.data)
         }
-        TODO("Not yet implemented")
+        // TODO Not yet implemented
     }
 
     override fun onUpdateSession(type: ReceiveActions, data: ArrayList<String>) {

@@ -1,5 +1,6 @@
 package fr.falling_knife.lab.pmv.utils
 
+import android.util.Log
 import fr.falling_knife.lab.pmv.MainActivity
 import fr.falling_knife.lab.pmv.R
 import fr.falling_knife.lab.pmv.fragments.FragmentSession
@@ -25,7 +26,7 @@ class TcpClient(activity: MainActivity) {
     fun authenticate(dataLogin: DataApp): String{
         val one = CoroutineScope(Dispatchers.IO).async {
             val state: Boolean = connectToServer(dataLogin)
-            println("Is connected: $state")
+            Log.d("TcpCl::authen","Is connected: $state")
             if(state)
                 login(dataLogin)
             else
@@ -46,7 +47,7 @@ class TcpClient(activity: MainActivity) {
             response = readWithTimeout(TIMEOUT)
         }catch (e: Exception){
             response = e.message.toString()
-            println(response)
+            Log.d("TcpCl::login", "response")
         }
         return response
     }
@@ -58,14 +59,10 @@ class TcpClient(activity: MainActivity) {
                 _writer = _socket!!.getOutputStream()
                 _reader = _socket!!.getInputStream()
             }
-            println("Socket is ${_socket != null}")
-            println("Socket is ${_socket != null}")
-            println("Socket is ${_socket != null}")
+            Log.d("TcpCl::connectServ","Socket is ${_socket != null}")
             true
         }catch(e: Exception){
-            println("Socket is planted")
-            println("Socket is planted")
-            println("Socket is planted")
+            Log.d("TcpCl::connectServE","Socket is planted")
             false
         }
     }
