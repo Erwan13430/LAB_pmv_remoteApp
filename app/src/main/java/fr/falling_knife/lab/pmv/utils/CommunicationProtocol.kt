@@ -7,7 +7,8 @@ import org.json.JSONTokener
 enum class RequestType{
     BUTTON,
     LOGIN,
-    USER_SELECT
+    USER_SELECT,
+    CONTROL
 }
 
 class CommunicationProtocol {
@@ -36,6 +37,7 @@ class CommunicationProtocol {
                     "${datas[1]}, ${datas[2]}" +
                     "]" +
                     "}"
+            RequestType.CONTROL -> request += """"getControl""""
         }
 
         request += "}"

@@ -39,6 +39,13 @@ class TcpClient(activity: MainActivity) {
         return response
     }
 
+    fun sendCommand(trame: String){
+        CoroutineScope(Dispatchers.Main).launch(Dispatchers.IO){
+            _writer.write(trame.toByteArray())
+            Log.d("TcpCl::sendCmd", "Sending $trame")
+        }
+    }
+
     private fun login(dataLogin: DataApp): String{
         var response = "Nothing"
         try{

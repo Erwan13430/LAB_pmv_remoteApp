@@ -29,7 +29,7 @@ class MainActivity: AppCompatActivity(), FragmentLogin.OnCheckConnectionSettings
             message = "Connected to ${settings.SERVER_ADDRESS} Port=${settings.SERVER_PORT}"
             supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, FragmentSession.newInstance(
                 settings.login, settings.password, settings.SERVER_ADDRESS, settings.SERVER_PORT.toString()
-            )).commit()
+            ), "FrgmSess").commit()
         } // if
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
@@ -45,17 +45,22 @@ class MainActivity: AppCompatActivity(), FragmentLogin.OnCheckConnectionSettings
     }
 
     override fun onSendCommand(data: DataSend) {
-        when(data.mode){
+        val trame = when(data.mode){
             SendAction.BUTTON -> _protocol.prepareRequest(RequestType.BUTTON, data.data)
+            SendAction.CONTROL -> _protocol.prepareRequest(RequestType.CONTROL, data.data)
+            else -> null
         }
+
+        _client.sendCommand(trame!!)
+
         // TODO Not yet implemented
     }
 
     override fun onUpdateSession(type: ReceiveActions, data: ArrayList<String>) {
         when(type) {
             ReceiveActions.CONTROL -> {
-                val f: FragmentSession = supportFragmentManager.findFragmentById(R.id.fragmentSession) as FragmentSession
-
+                val f: FragmentSession = supportFragmentManager.findFragmentByTag("FrgmSess") as FragmentSession
+                f.disableInterface()
             }
         }
     }

@@ -8,10 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.view.isVisible
 import fr.falling_knife.lab.pmv.R
 import fr.falling_knife.lab.pmv.utils.DataApp
 import fr.falling_knife.lab.pmv.utils.DataSend
 import fr.falling_knife.lab.pmv.utils.ReceiveActions
+import fr.falling_knife.lab.pmv.utils.SendAction
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -68,6 +70,9 @@ class FragmentSession : Fragment() {
             val btnReady: Button = _rootView.findViewById<Button>(R.id.btnReady)
             val btnGo: Button = _rootView.findViewById<Button>(R.id.btnGo)
             val btnGest: ArrayList<Button> = arrayListOf(btnStartSess, btnPrep, btnAvm, btnReady, btnGo)
+            val btnControl: Button = _rootView.findViewById<Button>(R.id.btnControl)
+
+            initIHM(btnGest)
 
             //Initialisation des boutons de gestion
             btnStartSess.setOnClickListener { btnSelectListener(btnGest) }
@@ -75,6 +80,8 @@ class FragmentSession : Fragment() {
             btnAvm.setOnClickListener{ btnAVMListener(btnGest) }
             btnReady.setOnClickListener{ btnReadyListener(btnGest) }
             btnGo.setOnClickListener { btnGoListener(btnGest) }
+            btnControl.setOnClickListener { btnControlListener() }
+            btnControl.isVisible = false
 
             //Récupération et initialisation des boutons radio
             val rdBtns: ArrayList<RadioButton> = getSelectButton(_rootView)
@@ -94,6 +101,12 @@ class FragmentSession : Fragment() {
         return _rootView
 
         // TODO: Appel listener onSession
+    }
+
+    private fun initIHM(buttons: ArrayList<Button>){
+        for(i in 1 until buttons.count()){
+            buttons[i].isEnabled = false
+        }
     }
 
     private fun getSelectButton(view: View): ArrayList<RadioButton>{
@@ -126,32 +139,42 @@ class FragmentSession : Fragment() {
         }
     }
 
+    private fun btnControlListener(){
+        enableInterface()
+    }
+
     private fun btnPreparationListener(btnGest: ArrayList<Button>){
         Toast.makeText(activity?.baseContext, "Préparation", Toast.LENGTH_SHORT).show()
 
         for(i in 0 until btnGest.count())
-            btnGest[i].isEnabled = i == 1 || i == 2
+            btnGest[i].isEnabled = i == 2
     }
 
     private fun btnAVMListener(btnGest: ArrayList<Button>){
         Toast.makeText(activity?.baseContext, "À vos marques", Toast.LENGTH_SHORT).show()
 
         for(i in 0 until btnGest.count())
-            btnGest[i].isEnabled = i == 2 || i == 3
+            btnGest[i].isEnabled = i == 1 || i == 3
     }
 
     private fun btnReadyListener(btnGest: ArrayList<Button>){
         Toast.makeText(activity?.baseContext, "Prêt", Toast.LENGTH_SHORT).show()
 
         for(i in 0 until btnGest.count())
-            btnGest[i].isEnabled = i == 3 || i == 4
+            btnGest[i].isEnabled = i == 2 || i == 4
     }
 
     private fun btnGoListener(btnGest: ArrayList<Button>){
         if(btnGest[4].text == resources.getText(R.string.btnGo)) {
             for(i in 0 until btnGest.count())
                 btnGest[i].isEnabled = i == 4
+            btnGest[4].text = resources.getText(R.string.btnStop)
+            Toast.makeText(activity?.baseContext, "Partez !", Toast.LENGTH_SHORT).show()
+        }else{
+            for(i in 0 until btnGest.count())
+                btnGest[i].isEnabled = i == 1
             btnGest[4].text = resources.getText(R.string.btnGo)
+            Toast.makeText(activity?.baseContext, "Arrêt de la course !", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -164,13 +187,14 @@ class FragmentSession : Fragment() {
     }
 
     private fun rdButtonListener(rdBtns: ArrayList<RadioButton>, radio: View){
-        var id: Int? = null
+        var id: Int = 0
         for(i in 0 until rdBtns.count())
-            id = if(id == 0) {
-                if(radio == rdBtns[i]) i+1 else 0
-            }else{
+            id = if (id == 0) {
+                if (radio == rdBtns[i]) i + 1 else 0
+            } else {
                 id
             }
+
         val lineText = activity?.findViewById<TextView>(R.id.lineTitle)
         var text: String = activity?.getText(R.string.lineNumber) as String
         lineText?.text = text + " " + id?.toString()
@@ -201,6 +225,36 @@ class FragmentSession : Fragment() {
         _rootView.findViewById<Button>(R.id.btnReady).isEnabled = false
         _rootView.findViewById<Button>(R.id.btnGo).isEnabled = false
 
+        stateControlButton(true)
+        _rootView.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarSelect).setBackgroundColor(resources.getColor(R.color.teal_700))
+        _rootView.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarControl).setBackgroundColor(resources.getColor(R.color.teal_700))
+
+    }
+
+    private fun enableInterface(){
+        getSelectButton(_rootView).iterator().forEach {
+            it.isEnabled = true
+        }
+        getSpinners(_rootView).iterator().forEach {
+            it.isEnabled = true
+        }
+
+        _rootView.findViewById<Button>(R.id.btnSelect).isEnabled = true
+        _rootView.findViewById<Button>(R.id.btnPrep).isEnabled = true
+        _rootView.findViewById<Button>(R.id.btnAVM).isEnabled = true
+        _rootView.findViewById<Button>(R.id.btnReady).isEnabled = true
+        _rootView.findViewById<Button>(R.id.btnGo).isEnabled = true
+
+        stateControlButton(false)
+        _rootView.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarSelect).setBackgroundColor(resources.getColor(R.color.red_200))
+        _rootView.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarControl).setBackgroundColor(resources.getColor(R.color.red_200))
+
+        _listener.onSendCommand(DataSend(SendAction.CONTROL, arrayListOf()))
+
+    }
+
+    private fun stateControlButton(state: Boolean){
+        _rootView.findViewById<Button>(R.id.btnControl).isVisible = state
     }
 
     companion object {
