@@ -23,5 +23,7 @@ data class DataSend(
 enum class ReceiveActions{
     CONTROL,
     BUTTON,
-    RUNS
+    RUNS,
+    RUNNERS,
+    SESSION
 }

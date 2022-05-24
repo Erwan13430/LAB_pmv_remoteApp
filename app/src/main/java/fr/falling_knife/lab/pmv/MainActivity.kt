@@ -25,7 +25,7 @@ class MainActivity: AppCompatActivity(), FragmentLogin.OnCheckConnectionSettings
     override fun onCheckConnectionSettings(settings: DataApp) {
         var message = "Unable to connect to ${settings.SERVER_ADDRESS} Port=${settings.SERVER_PORT}"
         val response = _client.authenticate(settings)
-        if(_protocol.decodeData(response) == "authTrue"){
+        if(_protocol.decodeData(response)[1] == "authTrue"){
             message = "Connected to ${settings.SERVER_ADDRESS} Port=${settings.SERVER_PORT}"
             supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, FragmentSession.newInstance(
                 settings.login, settings.password, settings.SERVER_ADDRESS, settings.SERVER_PORT.toString()
@@ -56,11 +56,17 @@ class MainActivity: AppCompatActivity(), FragmentLogin.OnCheckConnectionSettings
         // TODO Not yet implemented
     }
 
-    override fun onUpdateSession(type: ReceiveActions, data: ArrayList<String>) {
+    override fun onUpdateSession(type: ReceiveActions, data: ArrayList<Any>) {
+        val f: FragmentSession = supportFragmentManager.findFragmentByTag("FrgmSess") as FragmentSession
         when(type) {
             ReceiveActions.CONTROL -> {
-                val f: FragmentSession = supportFragmentManager.findFragmentByTag("FrgmSess") as FragmentSession
                 f.disableInterface()
+            }
+            ReceiveActions.RUNNERS -> {
+                f.setRunnersList(data)
+            }
+            ReceiveActions.SESSION -> {
+                f.restoreSession(data)
             }
         }
     }

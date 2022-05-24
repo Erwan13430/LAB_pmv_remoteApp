@@ -3,6 +3,8 @@ package fr.falling_knife.lab.pmv.utils
 import android.util.Log
 import org.json.JSONObject
 import org.json.JSONTokener
+import java.util.*
+import kotlin.collections.ArrayList
 
 enum class RequestType{
     BUTTON,
@@ -45,7 +47,7 @@ class CommunicationProtocol {
         return request
     }
 
-    fun decodeData(data: String): String{
+    fun decodeData(data: String): ArrayList<Any>{
         Log.d("decodeData1", data)
         var command: String
         var jsonObject: JSONObject
@@ -65,17 +67,58 @@ class CommunicationProtocol {
                 Log.d("decodeData3", jsonData.toString())
                 val authStatus = jsonData.getInt("success")
                 Log.d("decodeData4", authStatus.toString())
-                if(authStatus == 1) "authTrue" else "authFalse"
+                if(authStatus == 1) arrayListOf("authTrue") else arrayListOf("authFalse")
             }
             "getControl" -> {
                 Log.d("decodeData5", "getControl")
-                "getControl"
+                arrayListOf("getControl")
+            }
+            "transfertAllRunners" -> {
+                Log.d("decodeData7", "transfertAllRunners")
+                var runners: ArrayList<Any> = decodeTransfertAllRunners(jsonObject.getJSONObject("data")) as ArrayList<Any>
+                runners.add(0, "transfertAllRunners")
+                runners
+            }
+            "sessionTransfert" -> {
+                Log.d("Prot::decodeData", "sessionTransfert")
+                var session: ArrayList<Any> = decodeSessionTransfert(jsonObject.getJSONObject("data")) as ArrayList<Any>
+                session.add(0, "sessionTransfert")
+                session
             }
             else -> {
                 Log.d("decodeData6", "REC UNKNOWN")
-                "UNKNOWN !"
+                arrayListOf("UNKNOWN !")
             }
         }
+    }
+
+    private fun decodeTransfertAllRunners(data: JSONObject): ArrayList<String>{
+        val count: Int = data.getInt("runnersCnt")
+        var runners: ArrayList<String> = arrayListOf()
+
+        for(i in 1..count){
+            runners.add(data.getJSONObject("runner$i").getString("name"))
+        }
+        return runners
+    }
+
+    private fun decodeSessionTransfert(data: JSONObject): ArrayList<ArrayList<String>>{
+        val count: Int = data.getInt("runCount")
+        var runs: ArrayList<ArrayList<String>> = arrayListOf()
+        for(i in 1..count){
+            val currentRun = data.getJSONObject("run$i")
+            var run: ArrayList<String> = arrayListOf(
+                currentRun.getString("runner1"),
+                currentRun.getString("time1"),
+                currentRun.getString("wind1"),
+                currentRun.getString("speed1"),
+                currentRun.getString("runner2"),
+                currentRun.getString("time2"),
+                currentRun.getString("wind2"),
+                currentRun.getString("speed2"))
+            runs.add(run)
+        }
+        return runs
     }
 
 }

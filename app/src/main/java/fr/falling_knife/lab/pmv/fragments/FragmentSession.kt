@@ -87,13 +87,6 @@ class FragmentSession : Fragment() {
             val rdBtns: ArrayList<RadioButton> = getSelectButton(_rootView)
             initRadioButtons(rdBtns)
 
-
-            //Récupération et initialisation des spinners
-            var test: Array<String> = arrayOf("test", "test2", "test3")
-            val arSpinner: ArrayAdapter<String> = ArrayAdapter<String>(_rootView.context, android.R.layout.simple_spinner_dropdown_item, test)
-            val spinners: ArrayList<Spinner> = getSpinners(_rootView)
-            initSpinners(spinners, arSpinner)
-
         } //if
 
         Log.d("FragmentSession", "Starting onSessionRunning")
@@ -257,6 +250,24 @@ class FragmentSession : Fragment() {
         _rootView.findViewById<Button>(R.id.btnControl).isVisible = state
     }
 
+    fun setRunnersList(runners: ArrayList<Any>){
+        val runnersList: ArrayList<String> = runners as ArrayList<String>
+        val arrayAdapter: ArrayAdapter<String> = ArrayAdapter<String>(_rootView.context, android.R.layout.simple_spinner_dropdown_item, runners)
+        initSpinners(getSpinners(_rootView), arrayAdapter)
+    }
+
+    fun restoreSession(data: ArrayList<Any>){
+        val session: ArrayList<ArrayList<String>> = data as ArrayList<ArrayList<String>>
+        for(i in 0 until session.count()){
+            val spinner1 = _rootView.findViewById<Spinner>(resources.getIdentifier("spinRun${i + 1}", "id", activity?.packageName))
+            val adapt1 = spinner1.adapter as ArrayAdapter<String>
+            spinner1.setSelection(adapt1.getPosition(session[i][0]))
+            _rootView.findViewById<TextView>(resources.getIdentifier("txtTime${i + 1}", "id", activity?.packageName)).text = session[i][1]
+            _rootView.findViewById<TextView>(resources.getIdentifier("txtWind${i +  1}", "id", activity?.packageName)).text = session[i][2]
+            _rootView.findViewById<TextView>(resources.getIdentifier("txtSpeed${i + 1}", "id", activity?.packageName)).text = session[i][3]
+        }
+    }
+
     companion object {
         /**
          * Use this factory method to create a new instance of
@@ -283,6 +294,6 @@ class FragmentSession : Fragment() {
         fun onSessionRunning(settings: DataApp)
         fun onSendCommand(data: DataSend)
         fun onEndSession(settings: DataApp)
-        fun onUpdateSession(type: ReceiveActions, data: ArrayList<String>)
+        fun onUpdateSession(type: ReceiveActions, data: ArrayList<Any>)
     }
 }

@@ -103,10 +103,18 @@ class TcpClient(activity: MainActivity) {
             while(!_end){
                 val response = readWithTimeout(TIMEOUT)
                 val lines = _protocol.decodeData(response)
-                if(lines.isNotEmpty()){
+                if(lines[0].toString().isNotEmpty()){
                     _activity.runOnUiThread{
-                        when(lines) {
+                        when(lines[0].toString()) {
                             "getControl" -> _activity?.onUpdateSession(ReceiveActions.CONTROL, arrayListOf())
+                            "transfertAllRunners" -> {
+                                lines.removeAt(0)
+                                _activity?.onUpdateSession(ReceiveActions.RUNNERS, lines)
+                            }
+                            "sessionTransfert" -> {
+                                lines.removeAt(0)
+                                _activity?.onUpdateSession(ReceiveActions.SESSION, lines)
+                            }
                         }
                     }
                 }
