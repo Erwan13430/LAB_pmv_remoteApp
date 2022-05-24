@@ -1,6 +1,7 @@
 package fr.falling_knife.lab.pmv
 
 import android.os.Bundle
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import fr.falling_knife.lab.pmv.fragments.FragmentLogin
@@ -52,7 +53,11 @@ class MainActivity: AppCompatActivity(), FragmentLogin.OnCheckConnectionSettings
 
     override fun onUpdateSession(type: ReceiveActions, data: ArrayList<String>) {
         when(type) {
-            ReceiveActions.CONTROL -> { supportFragmentManager.findFragmentById(R.id.fragmentSession)?.view?.isEnabled = false}
+            ReceiveActions.CONTROL -> {
+                val f: FragmentSession = supportFragmentManager.findFragmentById(R.id.fragmentSession) as FragmentSession
+
+            }
         }
     }
+
 }

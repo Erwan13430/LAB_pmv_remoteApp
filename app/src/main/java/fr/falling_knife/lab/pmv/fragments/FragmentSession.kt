@@ -12,7 +12,6 @@ import fr.falling_knife.lab.pmv.R
 import fr.falling_knife.lab.pmv.utils.DataApp
 import fr.falling_knife.lab.pmv.utils.DataSend
 import fr.falling_knife.lab.pmv.utils.ReceiveActions
-import fr.falling_knife.lab.pmv.utils.SendAction
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -33,6 +32,7 @@ class FragmentSession : Fragment() {
     private var _serverAddress: String? = null
     private var _serverPort: String? = null
     private lateinit var _listener: OnSessionManagement
+    private lateinit var _rootView: View
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -56,17 +56,17 @@ class FragmentSession : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val rootView = inflater.inflate(R.layout.fragment_session, container, false)
+        _rootView = inflater.inflate(R.layout.fragment_session, container, false)
 
         if(savedInstanceState == null){
             //Initialisation de l'IHM
 
             //Récupération des boutons de gestion
-            val btnStartSess: Button = rootView.findViewById<Button>(R.id.btnSelect)
-            val btnPrep: Button = rootView.findViewById<Button>(R.id.btnPrep)
-            val btnAvm: Button = rootView.findViewById<Button>(R.id.btnAVM)
-            val btnReady: Button = rootView.findViewById<Button>(R.id.btnReady)
-            val btnGo: Button = rootView.findViewById<Button>(R.id.btnGo)
+            val btnStartSess: Button = _rootView.findViewById<Button>(R.id.btnSelect)
+            val btnPrep: Button = _rootView.findViewById<Button>(R.id.btnPrep)
+            val btnAvm: Button = _rootView.findViewById<Button>(R.id.btnAVM)
+            val btnReady: Button = _rootView.findViewById<Button>(R.id.btnReady)
+            val btnGo: Button = _rootView.findViewById<Button>(R.id.btnGo)
             val btnGest: ArrayList<Button> = arrayListOf(btnStartSess, btnPrep, btnAvm, btnReady, btnGo)
 
             //Initialisation des boutons de gestion
@@ -77,21 +77,21 @@ class FragmentSession : Fragment() {
             btnGo.setOnClickListener { btnGoListener(btnGest) }
 
             //Récupération et initialisation des boutons radio
-            val rdBtns: ArrayList<RadioButton> = getSelectButton(rootView)
+            val rdBtns: ArrayList<RadioButton> = getSelectButton(_rootView)
             initRadioButtons(rdBtns)
 
 
             //Récupération et initialisation des spinners
             var test: Array<String> = arrayOf("test", "test2", "test3")
-            val arSpinner: ArrayAdapter<String> = ArrayAdapter<String>(rootView.context, android.R.layout.simple_spinner_dropdown_item, test)
-            val spinners: ArrayList<Spinner> = getSpinners(rootView)
+            val arSpinner: ArrayAdapter<String> = ArrayAdapter<String>(_rootView.context, android.R.layout.simple_spinner_dropdown_item, test)
+            val spinners: ArrayList<Spinner> = getSpinners(_rootView)
             initSpinners(spinners, arSpinner)
 
         } //if
 
         Log.d("FragmentSession", "Starting onSessionRunning")
         _listener.onSessionRunning(DataApp(_login!!, _password!!, _serverAddress!!, _serverPort!!.toInt(), "onSessionRunning"))
-        return rootView
+        return _rootView
 
         // TODO: Appel listener onSession
     }
@@ -185,6 +185,22 @@ class FragmentSession : Fragment() {
             it.isChecked = it == radios[id-1]
             Log.d("FrgSess::Btn", "$it is ${it.isChecked}")
         }
+    }
+
+    fun disableInterface(){
+        getSelectButton(_rootView).iterator().forEach {
+            it.isEnabled = false
+        }
+        getSpinners(_rootView).iterator().forEach {
+            it.isEnabled = false
+        }
+
+        _rootView.findViewById<Button>(R.id.btnSelect).isEnabled = false
+        _rootView.findViewById<Button>(R.id.btnPrep).isEnabled = false
+        _rootView.findViewById<Button>(R.id.btnAVM).isEnabled = false
+        _rootView.findViewById<Button>(R.id.btnReady).isEnabled = false
+        _rootView.findViewById<Button>(R.id.btnGo).isEnabled = false
+
     }
 
     companion object {
