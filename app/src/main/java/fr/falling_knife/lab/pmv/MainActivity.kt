@@ -25,7 +25,7 @@ class MainActivity: AppCompatActivity(), FragmentLogin.OnCheckConnectionSettings
     override fun onCheckConnectionSettings(settings: DataApp) {
         var message = "Unable to connect to ${settings.SERVER_ADDRESS} Port=${settings.SERVER_PORT}"
         val response = _client.authenticate(settings)
-        if(_protocol.decodeData(response)[1] == "authTrue"){
+        if(_protocol.decodeData(response)[0] == "authTrue"){
             message = "Connected to ${settings.SERVER_ADDRESS} Port=${settings.SERVER_PORT}"
             supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, FragmentSession.newInstance(
                 settings.login, settings.password, settings.SERVER_ADDRESS, settings.SERVER_PORT.toString()

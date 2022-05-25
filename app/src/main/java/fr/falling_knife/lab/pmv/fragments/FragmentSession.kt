@@ -1,5 +1,6 @@
 package fr.falling_knife.lab.pmv.fragments
 
+import android.app.StatusBarManager
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.content.res.AppCompatResources.getColorStateList
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import fr.falling_knife.lab.pmv.R
 import fr.falling_knife.lab.pmv.utils.DataApp
@@ -64,15 +67,14 @@ class FragmentSession : Fragment() {
             //Initialisation de l'IHM
 
             //Récupération des boutons de gestion
-            val btnStartSess: Button = _rootView.findViewById<Button>(R.id.btnSelect)
-            val btnPrep: Button = _rootView.findViewById<Button>(R.id.btnPrep)
-            val btnAvm: Button = _rootView.findViewById<Button>(R.id.btnAVM)
-            val btnReady: Button = _rootView.findViewById<Button>(R.id.btnReady)
-            val btnGo: Button = _rootView.findViewById<Button>(R.id.btnGo)
+            val btnStartSess: Button = _rootView.findViewById(R.id.btnSelect)
+            val btnPrep: Button = _rootView.findViewById(R.id.btnPrep)
+            val btnAvm: Button = _rootView.findViewById(R.id.btnAVM)
+            val btnReady: Button = _rootView.findViewById(R.id.btnReady)
+            val btnGo: Button = _rootView.findViewById(R.id.btnGo)
             val btnGest: ArrayList<Button> = arrayListOf(btnStartSess, btnPrep, btnAvm, btnReady, btnGo)
-            val btnControl: Button = _rootView.findViewById<Button>(R.id.btnControl)
+            val btnControl: Button = _rootView.findViewById(R.id.btnControl)
 
-            initIHM(btnGest)
 
             //Initialisation des boutons de gestion
             btnStartSess.setOnClickListener { btnSelectListener(btnGest) }
@@ -87,6 +89,8 @@ class FragmentSession : Fragment() {
             val rdBtns: ArrayList<RadioButton> = getSelectButton(_rootView)
             initRadioButtons(rdBtns)
 
+            initIHM(btnGest, rdBtns)
+
         } //if
 
         Log.d("FragmentSession", "Starting onSessionRunning")
@@ -96,10 +100,14 @@ class FragmentSession : Fragment() {
         // TODO: Appel listener onSession
     }
 
-    private fun initIHM(buttons: ArrayList<Button>){
+    private fun initIHM(buttons: ArrayList<Button>, rdBtns: ArrayList<RadioButton>){
         for(i in 1 until buttons.count()){
             buttons[i].isEnabled = false
         }
+        rdBtns[0].isChecked = true
+        val text = String.format(resources.getString(R.string.lineNumber), "1")
+        _rootView.findViewById<TextView>(R.id.lineTitle).text = text
+        _rootView.findViewById<TextView>(R.id.txtSessionName).text = String.format(resources.getString(R.string.sessionName), resources.getString(R.string.defaultSessionName))
     }
 
     private fun getSelectButton(view: View): ArrayList<RadioButton>{
@@ -189,12 +197,10 @@ class FragmentSession : Fragment() {
             }
 
         val lineText = activity?.findViewById<TextView>(R.id.lineTitle)
-        var text: String = activity?.getText(R.string.lineNumber) as String
-        lineText?.text = text + " " + id?.toString()
-        Log.d("FrgSess::ID", id!!.toString())
-        id?.let {
-            disableButtons(id, rdBtns)
-        }
+        val text: String = String.format(resources.getString(R.string.lineNumber), id)
+        lineText?.text = text
+        Log.d("FrgSess::ID", id.toString())
+        disableButtons(id, rdBtns)
     }
 
     private fun disableButtons(id: Int, radios: ArrayList<RadioButton>){
@@ -219,9 +225,9 @@ class FragmentSession : Fragment() {
         _rootView.findViewById<Button>(R.id.btnGo).isEnabled = false
 
         stateControlButton(true)
-        _rootView.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarSelect).setBackgroundColor(resources.getColor(R.color.teal_700))
-        _rootView.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarControl).setBackgroundColor(resources.getColor(R.color.teal_700))
-
+        _rootView.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarSelect).setBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.teal_700))
+        _rootView.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarControl).setBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.teal_700))
+        activity?.window?.statusBarColor = ContextCompat.getColor(requireActivity(), R.color.teal_700)
     }
 
     private fun enableInterface(){
@@ -241,6 +247,7 @@ class FragmentSession : Fragment() {
         stateControlButton(false)
         _rootView.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarSelect).setBackgroundColor(resources.getColor(R.color.red_200))
         _rootView.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarControl).setBackgroundColor(resources.getColor(R.color.red_200))
+        activity?.window?.statusBarColor = ContextCompat.getColor(requireActivity(), R.color.red_200)
 
         _listener.onSendCommand(DataSend(SendAction.CONTROL, arrayListOf()))
 
@@ -252,19 +259,29 @@ class FragmentSession : Fragment() {
 
     fun setRunnersList(runners: ArrayList<Any>){
         val runnersList: ArrayList<String> = runners as ArrayList<String>
-        val arrayAdapter: ArrayAdapter<String> = ArrayAdapter<String>(_rootView.context, android.R.layout.simple_spinner_dropdown_item, runners)
+        _rootView.findViewById<TextView>(R.id.txtSessionName).text = String.format(resources.getString(R.string.sessionName), runnersList[0])
+        runnersList.removeAt(0)
+        val arrayAdapter: ArrayAdapter<String> = ArrayAdapter<String>(_rootView.context, android.R.layout.simple_spinner_dropdown_item, runnersList)
         initSpinners(getSpinners(_rootView), arrayAdapter)
     }
 
     fun restoreSession(data: ArrayList<Any>){
         val session: ArrayList<ArrayList<String>> = data as ArrayList<ArrayList<String>>
-        for(i in 0 until session.count()){
-            val spinner1 = _rootView.findViewById<Spinner>(resources.getIdentifier("spinRun${i + 1}", "id", activity?.packageName))
-            val adapt1 = spinner1.adapter as ArrayAdapter<String>
-            spinner1.setSelection(adapt1.getPosition(session[i][0]))
-            _rootView.findViewById<TextView>(resources.getIdentifier("txtTime${i + 1}", "id", activity?.packageName)).text = session[i][1]
-            _rootView.findViewById<TextView>(resources.getIdentifier("txtWind${i +  1}", "id", activity?.packageName)).text = session[i][2]
-            _rootView.findViewById<TextView>(resources.getIdentifier("txtSpeed${i + 1}", "id", activity?.packageName)).text = session[i][3]
+        for(i in 1..session.count()){
+            val id: Int = session[i - 1][0].toInt()
+            var spinner = _rootView.findViewById<Spinner>(resources.getIdentifier("spinRun${(i * 2) - 1}", "id", activity?.packageName))
+            var adapt = spinner.adapter as ArrayAdapter<String>
+            spinner.setSelection(adapt.getPosition(session[i - 1][1]))
+            _rootView.findViewById<TextView>(resources.getIdentifier("txtTime${(i * 2) - 1}", "id", activity?.packageName)).text = session[i - 1][2]
+            _rootView.findViewById<TextView>(resources.getIdentifier("txtWind${(i * 2) - 1}", "id", activity?.packageName)).text = session[i - 1][3]
+            _rootView.findViewById<TextView>(resources.getIdentifier("txtSpeed${(i * 2) - 1}", "id", activity?.packageName)).text = session[i - 1][4]
+
+            spinner = _rootView.findViewById<Spinner>(resources.getIdentifier("spinRun${i * 2}", "id", activity?.packageName))
+            adapt = spinner.adapter as ArrayAdapter<String>
+            spinner.setSelection(adapt.getPosition(session[i - 1][5]))
+            _rootView.findViewById<TextView>(resources.getIdentifier("txtTime${i * 2}", "id", activity?.packageName)).text = session[i - 1][6]
+            _rootView.findViewById<TextView>(resources.getIdentifier("txtWind${i * 2}", "id", activity?.packageName)).text = session[i - 1][7]
+            _rootView.findViewById<TextView>(resources.getIdentifier("txtSpeed${i * 2}", "id", activity?.packageName)).text = session[i - 1][8]
         }
     }
 

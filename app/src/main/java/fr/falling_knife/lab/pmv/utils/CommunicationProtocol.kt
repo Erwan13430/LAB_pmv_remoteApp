@@ -96,6 +96,7 @@ class CommunicationProtocol {
         val count: Int = data.getInt("runnersCnt")
         var runners: ArrayList<String> = arrayListOf()
 
+        runners.add(data.getString("sessionName"))
         for(i in 1..count){
             runners.add(data.getJSONObject("runner$i").getString("name"))
         }
@@ -103,11 +104,12 @@ class CommunicationProtocol {
     }
 
     private fun decodeSessionTransfert(data: JSONObject): ArrayList<ArrayList<String>>{
-        val count: Int = data.getInt("runCount")
+        val count: Int = data.getInt("runCnt")
         var runs: ArrayList<ArrayList<String>> = arrayListOf()
         for(i in 1..count){
             val currentRun = data.getJSONObject("run$i")
             var run: ArrayList<String> = arrayListOf(
+                currentRun.getString("runId"),
                 currentRun.getString("runner1"),
                 currentRun.getString("time1"),
                 currentRun.getString("wind1"),

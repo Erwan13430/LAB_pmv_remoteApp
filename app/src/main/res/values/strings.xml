@@ -64,8 +64,9 @@
     <string name="btnGo">Go !</string>
     <string name="btnStop">Stop !</string>
     <string name="btnCSV">CSV</string>
-    <string name="hintSessionName">Nom de la session</string>
-    <string name="lineNumber">Course : </string>
+    <string name="sessionName">%1$s</string>
+    <string name="defaultSessionName">Session Inconnue</string>
+    <string name="lineNumber">Course : %1$s</string>
     <string name="titleLoginLogin">Connexion au système PMV</string>
     <string name="titleLoginId">Entrez votre identifiant : </string>
     <string name="titleLoginPasswd">Entrez votre mot de passe :</string>

@@ -21,30 +21,34 @@
             android:minWidth="60dp"
             android:minHeight="60dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/edtSessionName"
+            app:layout_constraintEnd_toStartOf="@+id/txtSessionName"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/edtSessionName"
+            app:layout_constraintTop_toTopOf="@+id/txtSessionName"
             app:srcCompat="@drawable/app_full_icon"
             tools:srcCompat="@drawable/app_full_icon" />
 
-        <EditText
-            android:id="@+id/edtSessionName"
+        <TextView
+            android:id="@+id/txtSessionName"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:hint="@string/hintSessionName"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10sp"
+            android:hint="@string/sessionName"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnSelect"
             app:layout_constraintStart_toEndOf="@+id/imageView2"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center"/>
 
         <Button
             android:id="@+id/btnSelect"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:text="@string/btnSelect"
+            android:layout_marginStart="10dp"
             android:textColor="@color/black"
-            app:layout_constraintStart_toEndOf="@+id/edtSessionName"
+            app:layout_constraintStart_toEndOf="@+id/txtSessionName"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
