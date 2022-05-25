@@ -44,13 +44,12 @@ Permet de transmettre l'ensemble des coureurs disponibles à l'application (uni-
 {
   "command": "transfertAllRunners",
   "data": {
+    "sessionName": "<nom de la session>",
     "runnersCnt": <nombre de coureurs de la session>,
     "runner1": {
-      "id": <id coureur dans la BDD>,
       "name": "<Nom + Initiale du prénom du coureur>"
     },
     "runner2": {
-      "id": <id coureur dans la BDD>,
       "name": "<Nom + Initiale du prénom du coureur>"
     },
     ...
@@ -61,6 +60,7 @@ Permet de transmettre l'ensemble des coureurs disponibles à l'application (uni-
 #### timeRun
 
 Permet de transmettre le temps d'une course spécifiée (uni-directionnel)
+Non utilisé dans la version 1.4 du protocole
 
 ```json
 {
@@ -73,6 +73,55 @@ Permet de transmettre le temps d'une course spécifiée (uni-directionnel)
     "time2": "<temps sous forme de chaine de caractères>",
     "wind2": "<vent sous forme de chaîne de caractères>",
     "speed2": "<vitesse sous forme de chaîne de caractères>"
+  }
+}
+```
+
+#### sessionTransfert
+
+Permet de transmettre l'ensemble de la session (uni-directionnel).
+
+Utilisé dans la version 1.4 du protocole comme moyen de transmission des données de course
+
+```json
+{
+  "command": "sessionTransfert",
+  "data": {
+    "runCnt": <nombre de courses effectuées>,
+    "run1": {
+      "runId": "<ID (ou ligne) de la course>",
+      "runner1": "<nom + initiale prénom coureur>",
+      "time1": "<temps coureur 1, ou N/A>",
+      "wind1": "<vitesse vent coureur 1 ou N/A>",
+      "speed1": "<vitesse coureur 1 N/A>",
+      "runner2": "<nom + initiale prénom coureur>",
+      "time2": "<temps coureur 2 ou N/A>",
+      "wind2": "<vitesse vent coureur 2 ou N/A>",
+      "speed2": "<vitesse coureur 2 ou N/A>"
+    },
+    "run2": {
+      "runId": "<ID (ou ligne) de la course>",
+      "runner1": "<nom + initiale prénom coureur>",
+      "time1": "<temps coureur 1, ou N/A>",
+      "wind1": "<vitesse vent coureur 1 ou N/A>",
+      "speed1": "<vitesse coureur 1 N/A>",
+      "runner2": "<nom + initiale prénom coureur>",
+      "time2": "<temps coureur 2 ou N/A>",
+      "wind2": "<vitesse vent coureur 2 ou N/A>",
+      "speed2": "<vitesse coureur 2 ou N/A>"
+    },
+    "run3": {
+      "runId": "<ID (ou ligne) de la course>",
+      "runner1": "<nom + initiale prénom coureur>",
+      "time1": "<temps coureur 1, ou N/A>",
+      "wind1": "<vitesse vent coureur 1 ou N/A>",
+      "speed1": "<vitesse coureur 1 N/A>",
+      "runner2": "<nom + initiale prénom coureur>",
+      "time2": "<temps coureur 2 ou N/A>",
+      "wind2": "<vitesse vent coureur 2 ou N/A>",
+      "speed2": "<vitesse coureur 2 ou N/A>"
+    },
+    ...
   }
 }
 ```
@@ -139,6 +188,7 @@ Cas Raspberry vers Application
   }
 }
 ```
+
 
 #### btnState
 
