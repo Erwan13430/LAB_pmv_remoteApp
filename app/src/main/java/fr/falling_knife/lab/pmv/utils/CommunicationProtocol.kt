@@ -75,15 +75,21 @@ class CommunicationProtocol {
             }
             "transfertAllRunners" -> {
                 Log.d("decodeData7", "transfertAllRunners")
-                var runners: ArrayList<Any> = decodeTransfertAllRunners(jsonObject.getJSONObject("data")) as ArrayList<Any>
+                val runners: ArrayList<Any> = decodeTransfertAllRunners(jsonObject.getJSONObject("data")) as ArrayList<Any>
                 runners.add(0, "transfertAllRunners")
                 runners
             }
             "sessionTransfert" -> {
                 Log.d("Prot::decodeData", "sessionTransfert")
-                var session: ArrayList<Any> = decodeSessionTransfert(jsonObject.getJSONObject("data")) as ArrayList<Any>
+                val session: ArrayList<Any> = decodeSessionTransfert(jsonObject.getJSONObject("data")) as ArrayList<Any>
                 session.add(0, "sessionTransfert")
                 session
+            }
+            "btnState" -> {
+                Log.d("Prot::decodeData", "btnState")
+                val btnState: ArrayList<Any> = decodeBtn(jsonObject.getJSONObject("data")) as ArrayList<Any>
+                btnState.add(0, "btnState")
+                btnState
             }
             else -> {
                 Log.d("decodeData6", "REC UNKNOWN")
@@ -94,7 +100,7 @@ class CommunicationProtocol {
 
     private fun decodeTransfertAllRunners(data: JSONObject): ArrayList<String>{
         val count: Int = data.getInt("runnersCnt")
-        var runners: ArrayList<String> = arrayListOf()
+        val runners: ArrayList<String> = arrayListOf()
 
         runners.add(data.getString("sessionName"))
         for(i in 1..count){
@@ -105,10 +111,10 @@ class CommunicationProtocol {
 
     private fun decodeSessionTransfert(data: JSONObject): ArrayList<ArrayList<String>>{
         val count: Int = data.getInt("runCnt")
-        var runs: ArrayList<ArrayList<String>> = arrayListOf()
+        val runs: ArrayList<ArrayList<String>> = arrayListOf()
         for(i in 1..count){
             val currentRun = data.getJSONObject("run$i")
-            var run: ArrayList<String> = arrayListOf(
+            val run: ArrayList<String> = arrayListOf(
                 currentRun.getString("runId"),
                 currentRun.getString("runner1"),
                 currentRun.getString("time1"),
@@ -121,6 +127,17 @@ class CommunicationProtocol {
             runs.add(run)
         }
         return runs
+    }
+
+    private fun decodeBtn(data: JSONObject): ArrayList<Int>{
+        return arrayListOf(
+            data.getInt("btnSess"),
+            data.getInt("btnPrep"),
+            data.getInt("btnAVM"),
+            data.getInt("btnReady"),
+            data.getInt("btnGo"),
+            data.getInt("btnStop")
+        )
     }
 
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/red_700"
+    android:background="?attr/colorPrimary"
     android:elevation="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +19,6 @@
             android:layout_marginEnd="1dp"
             android:onClick="onBtnPrepare"
             android:text="@string/btnPrepare"
-            android:textColor="@color/black"
             android:textSize="32sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/btnAVM"
             app:layout_constraintEnd_toStartOf="@+id/btnAVM"
@@ -33,7 +32,6 @@
             android:layout_marginEnd="1dp"
             android:onClick="onBtnAVM"
             android:text="@string/btnAVM"
-            android:textColor="@color/black"
             android:textSize="32sp"
             app:layout_constraintEnd_toStartOf="@+id/btnReady"
             app:layout_constraintStart_toEndOf="@+id/btnPrep"
@@ -47,7 +45,6 @@
             android:layout_marginEnd="1dp"
             android:onClick="onBtnReady"
             android:text="@string/btnReady"
-            android:textColor="@color/black"
             android:textSize="32sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/btnGo"
             app:layout_constraintEnd_toStartOf="@+id/btnGo"
@@ -61,7 +58,6 @@
             android:layout_marginEnd="32dp"
             android:onClick="onBtnGo"
             android:text="@string/btnGo"
-            android:textColor="@color/black"
             android:textSize="32sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/space"

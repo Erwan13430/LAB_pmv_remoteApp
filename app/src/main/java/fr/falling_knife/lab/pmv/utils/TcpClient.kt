@@ -2,8 +2,6 @@ package fr.falling_knife.lab.pmv.utils
 
 import android.util.Log
 import fr.falling_knife.lab.pmv.MainActivity
-import fr.falling_knife.lab.pmv.R
-import fr.falling_knife.lab.pmv.fragments.FragmentSession
 import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.InputStream
@@ -77,7 +75,7 @@ class TcpClient(activity: MainActivity) {
     private fun readWithTimeout(time: Long): String{
         var response = "NOTHING"
         var tempo: Long = 0
-        var delta: Long = 50
+        val delta: Long = 50
         val bReader = BufferedReader(InputStreamReader(_reader))
         while(tempo < time){
             val nb = _reader.available()
@@ -106,14 +104,18 @@ class TcpClient(activity: MainActivity) {
                 if(lines[0].toString().isNotEmpty()){
                     _activity.runOnUiThread{
                         when(lines[0].toString()) {
-                            "getControl" -> _activity?.onUpdateSession(ReceiveActions.CONTROL, arrayListOf())
+                            "getControl" -> _activity.onUpdateSession(ReceiveActions.CONTROL, arrayListOf())
                             "transfertAllRunners" -> {
                                 lines.removeAt(0)
-                                _activity?.onUpdateSession(ReceiveActions.RUNNERS, lines)
+                                _activity.onUpdateSession(ReceiveActions.RUNNERS, lines)
                             }
                             "sessionTransfert" -> {
                                 lines.removeAt(0)
-                                _activity?.onUpdateSession(ReceiveActions.SESSION, lines)
+                                _activity.onUpdateSession(ReceiveActions.SESSION, lines)
+                            }
+                            "btnState" -> {
+                                lines.removeAt(0)
+                                _activity.onUpdateSession(ReceiveActions.BUTTON, lines)
                             }
                         }
                     }

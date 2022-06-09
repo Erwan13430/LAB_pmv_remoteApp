@@ -1,7 +1,6 @@
 package fr.falling_knife.lab.pmv
 
 import android.os.Bundle
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import fr.falling_knife.lab.pmv.fragments.FragmentLogin
@@ -36,7 +35,6 @@ class MainActivity: AppCompatActivity(), FragmentLogin.OnCheckConnectionSettings
 
     override fun onSessionRunning(settings: DataApp) {
         _client.alwaysReadFromServer()
-        // TODO Not yet implemented
     }
 
     override fun onEndSession(settings: DataApp) {
@@ -68,6 +66,9 @@ class MainActivity: AppCompatActivity(), FragmentLogin.OnCheckConnectionSettings
             ReceiveActions.SESSION -> {
                 f.restoreSession(data)
             }
+            ReceiveActions.BUTTON ->
+                f.controlButtons(data)
+            else -> {}
         }
     }
 

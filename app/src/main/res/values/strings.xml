@@ -57,7 +57,7 @@
     <string name="toastGo">Partez !</string>
     <string name="toastStop">STOP !</string>
     <string name="toastCSV">Exportation du CSV en cours</string>
-    <string name="btnSelect">Démarrer Session</string>
+    <string name="btnSelect">Arrêter la Session</string>
     <string name="btnPrepare">Prép.</string>
     <string name="btnAVM">AVM</string>
     <string name="btnReady">Prêt !</string>
@@ -74,7 +74,6 @@
     <string name="edtLoginPasswd">Mot de passe</string>
     <string name="btnLogin">Se connecter</string>
     <string name="btnControl">Reprendre le contrôle</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
