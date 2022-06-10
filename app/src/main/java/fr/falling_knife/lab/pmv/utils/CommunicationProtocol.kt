@@ -68,7 +68,12 @@ class CommunicationProtocol {
                 Log.d("decodeData3", jsonData.toString())
                 val authStatus = jsonData.getInt("success")
                 Log.d("decodeData4", authStatus.toString())
-                if(authStatus == 1) arrayListOf("authTrue") else arrayListOf("authFalse")
+                when(authStatus){
+                    0 -> arrayListOf("authFalse")
+                    1 -> arrayListOf("authTrue")
+                    2 -> arrayListOf("authNoSess")
+                    else -> arrayListOf()
+                }
             }
             "getControl" -> {
                 Log.d("decodeData5", "getControl")
@@ -91,6 +96,10 @@ class CommunicationProtocol {
                 val btnState: ArrayList<Any> = decodeBtn(jsonObject.getJSONObject("data")) as ArrayList<Any>
                 btnState.add(0, "btnState")
                 btnState
+            }
+            "endSession" -> {
+                Log.d("decodeData8", "endSession")
+                arrayListOf("endSession")
             }
             else -> {
                 Log.d("decodeData6", "REC UNKNOWN")

@@ -24,12 +24,21 @@ class MainActivity: AppCompatActivity(), FragmentLogin.OnCheckConnectionSettings
     override fun onCheckConnectionSettings(settings: DataApp) {
         var message = "Unable to connect to ${settings.SERVER_ADDRESS} Port=${settings.SERVER_PORT}"
         val response = _client.authenticate(settings)
-        if(_protocol.decodeData(response)[0] == "authTrue"){
+        val authState = _protocol.decodeData(response)[0]
+        if(authState == "authNoSess"){
+            message = "The session is not started on ${settings.SERVER_ADDRESS}:${settings.SERVER_PORT}"
+            _client.endSession()
+        }else if(authState == "authTrue"){
             message = "Connected to ${settings.SERVER_ADDRESS} Port=${settings.SERVER_PORT}"
             supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, FragmentSession.newInstance(
                 settings.login, settings.password, settings.SERVER_ADDRESS, settings.SERVER_PORT.toString()
             ), "FrgmSess").commit()
-        } // if
+        } else if(authState == "authFalse"){
+            message = "Identifiant ou Mot de passe Incorrect"
+            _client.endSession()
+        } else {
+            _client.endSession()
+        }
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
@@ -37,9 +46,9 @@ class MainActivity: AppCompatActivity(), FragmentLogin.OnCheckConnectionSettings
         _client.alwaysReadFromServer()
     }
 
-    override fun onEndSession(settings: DataApp) {
-        // TODO Not yet implemented
-        // TODO Ajouter fonction fermeture socket
+    override fun onEndSession() {
+        _client.endSession()
+        (supportFragmentManager.findFragmentByTag("FrgmSess") as FragmentSession).endSession()
     }
 
     override fun onSendCommand(data: DataSend) {
@@ -58,7 +67,7 @@ class MainActivity: AppCompatActivity(), FragmentLogin.OnCheckConnectionSettings
         val f: FragmentSession = supportFragmentManager.findFragmentByTag("FrgmSess") as FragmentSession
         when(type) {
             ReceiveActions.CONTROL -> {
-                f.disableInterface()
+                f.disableInterfaceGC()
             }
             ReceiveActions.RUNNERS -> {
                 f.setRunnersList(data)

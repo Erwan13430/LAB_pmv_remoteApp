@@ -1,6 +1,8 @@
 package fr.falling_knife.lab.pmv.fragments
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
@@ -115,8 +117,8 @@ class FragmentSession : Fragment() {
     /* ----------------------------------------- */
     private fun initIHM(buttons: ArrayList<Button>, rdBtns: ArrayList<RadioButton>) {
 
-        for(i in 1 until buttons.count()){
-            buttons[i].isEnabled = false
+        for(i in 0 until buttons.count()){
+            buttons[i].isEnabled = i == 0 || i == 1
         }
 
         rdBtns[0].isChecked = true
@@ -130,7 +132,10 @@ class FragmentSession : Fragment() {
 
         spinners.iterator().forEach{
             it.adapter = adapter
+            it.isEnabled = false
         }
+        spinners[0].isEnabled = true
+        spinners[1].isEnabled = true
 
     } //initSpinners
 
@@ -191,16 +196,16 @@ class FragmentSession : Fragment() {
     /* ------------------------------ */
     private fun btnSelectListener(btnGest: ArrayList<Button>) {
 
-        Toast.makeText(activity?.baseContext, "Session démarrée", Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity?.baseContext, resources.getString(R.string.endSession), Toast.LENGTH_SHORT).show()
 
-        for(i in 0 until btnGest.count())
-            btnGest[i].isEnabled = i == 1
+        disableInterface()
 
+        _listener.onSendCommand(DataSend(SendAction.BUTTON, arrayListOf("1", "0", "0", "0", "0", "0")))
     } // btnSelectListener
 
     private fun btnControlListener() {
 
-        enableInterface()
+        enableInterfaceGC()
 
     } // btnControlListener
 
@@ -247,16 +252,17 @@ class FragmentSession : Fragment() {
             btnGest[4].text = resources.getText(R.string.btnStop)
             Toast.makeText(activity?.baseContext, "Partez !", Toast.LENGTH_SHORT).show()
 
-            btnGest[4].setBackgroundColor(
-                ContextCompat.getColor(requireActivity(),
-                    if(resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES)
-                        R.color.dark_green
-                    else
-                        R.color.light_green
-                )
-            )
 
             _listener.onSendCommand(DataSend(SendAction.BUTTON, arrayListOf("0", "0", "0", "0", "1", "0")))
+
+            val rdBtns = getSelectButton(_rootView)
+            val spinners = getSpinners(_rootView)
+            var id: Int = 0
+
+            for(i in 0 until rdBtns.count())
+                id = if(rdBtns[i].isChecked) i else id
+
+
 
         }else{
 
@@ -266,14 +272,6 @@ class FragmentSession : Fragment() {
             btnGest[4].text = resources.getText(R.string.btnGo)
             Toast.makeText(activity?.baseContext, "Arrêt de la course !", Toast.LENGTH_SHORT).show()
 
-            btnGest[4].setBackgroundColor(
-                ContextCompat.getColor(requireActivity(),
-                    if(resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES)
-                        R.color.dark_red
-                    else
-                        R.color.light_red
-                )
-            )
 
             _listener.onSendCommand(DataSend(SendAction.BUTTON, arrayListOf("0", "0", "0", "0", "0", "1")))
 
@@ -313,7 +311,15 @@ class FragmentSession : Fragment() {
 
     } // disableButton
 
-    fun disableInterface() {
+    fun disableInterfaceGC() {
+
+        disableInterface()
+
+        stateControlButton(true)
+
+    } // disableInterfaceGC
+
+    private fun disableInterface(){
 
         getSelectButton(_rootView).iterator().forEach {
 
@@ -333,8 +339,6 @@ class FragmentSession : Fragment() {
         _rootView.findViewById<Button>(R.id.btnReady).isEnabled = false
         _rootView.findViewById<Button>(R.id.btnGo).isEnabled = false
 
-        stateControlButton(true)
-
         val color =
             if(resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES)
                 R.color.dark_teal
@@ -347,7 +351,17 @@ class FragmentSession : Fragment() {
 
     } // disableInterface
 
-    private fun enableInterface() {
+    private fun enableInterfaceGC() {
+
+        enableInterface()
+
+        stateControlButton(false)
+
+        _listener.onSendCommand(DataSend(SendAction.CONTROL, arrayListOf()))
+
+    } // enableInterfaceGC
+
+    private fun enableInterface(){
 
         getSelectButton(_rootView).iterator().forEach {
 
@@ -367,8 +381,6 @@ class FragmentSession : Fragment() {
         _rootView.findViewById<Button>(R.id.btnReady).isEnabled = true
         _rootView.findViewById<Button>(R.id.btnGo).isEnabled = true
 
-        stateControlButton(false)
-
         val color =
             if(resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES)
                 R.color.dark_red
@@ -378,8 +390,6 @@ class FragmentSession : Fragment() {
         _rootView.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarSelect).setBackgroundColor(ContextCompat.getColor(requireActivity(), color))
         _rootView.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarControl).setBackgroundColor(ContextCompat.getColor(requireActivity(), color))
         activity?.window?.statusBarColor = ContextCompat.getColor(requireActivity(), color)
-
-        _listener.onSendCommand(DataSend(SendAction.CONTROL, arrayListOf()))
 
     } // enableInterface
 
@@ -428,9 +438,14 @@ class FragmentSession : Fragment() {
 
         }
         val rdBtns: ArrayList<RadioButton> = getSelectButton(_rootView)
+        val spinners: ArrayList<Spinner> = getSpinners(_rootView)
 
         for(i in 0 until rdBtns.count()){
             rdBtns[i].isEnabled = (i + 1) == session[session.count() - 1][0].toInt() || (i + 1) == (session[session.count() -1][0].toInt() + 1)
+        }
+
+        for(i in 0 until spinners.count()){
+            spinners[i].isEnabled = (i + 1) == ((session[session.count() - 1][0].toInt() * 2) - 1) || (i + 1) == (session[session.count() - 1][0].toInt() * 2)
         }
 
     } // restoreSession
@@ -448,6 +463,20 @@ class FragmentSession : Fragment() {
         btnGest[0].isEnabled = true
 
     } // controlButtons
+
+    fun endSession(){
+        val alertDialog = AlertDialog.Builder(context).create()
+        alertDialog.setTitle(resources.getString(R.string.alrtbox_endsess_title))
+        alertDialog.setMessage(resources.getString(R.string.alrtbox_endsess_msg))
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+        DialogInterface.OnClickListener() { dialog, which ->
+            fun onClick(dialog: DialogInterface, which: Int){
+                dialog.dismiss()
+                activity?.finishActivity(0)
+            }
+        });
+        alertDialog.show()
+    }
 
     companion object {
         /**
@@ -474,7 +503,7 @@ class FragmentSession : Fragment() {
     interface OnSessionManagement{
         fun onSessionRunning(settings: DataApp)
         fun onSendCommand(data: DataSend)
-        fun onEndSession(settings: DataApp)
+        fun onEndSession()
         fun onUpdateSession(type: ReceiveActions, data: ArrayList<Any>)
     } // OnSessionManagement
 }

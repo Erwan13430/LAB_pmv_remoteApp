@@ -117,11 +117,22 @@ class TcpClient(activity: MainActivity) {
                                 lines.removeAt(0)
                                 _activity.onUpdateSession(ReceiveActions.BUTTON, lines)
                             }
+                            "endSession" -> {
+                                _activity.onEndSession()
+                            }
                         }
                     }
                 }
             }
             _endThread = true
         }
+    }
+
+    fun endSession(){
+        _end = true
+        _reader.close()
+        _writer.close()
+        _socket?.close()
+        Log.d("TcpClient::endSession", "Etat de fermeture socket: ${_socket?.isClosed}")
     }
 }
