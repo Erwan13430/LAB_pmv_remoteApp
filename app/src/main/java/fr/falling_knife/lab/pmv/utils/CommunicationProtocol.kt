@@ -26,11 +26,12 @@ class CommunicationProtocol {
                     "}"
             RequestType.BUTTON -> request += """"btnState",""" +
                     """"data": {""" +
-                    """"btnSess": ${datas[0]},""" +
-                    """"btnPrep": ${datas[1]},""" +
-                    """"btnAVM:" ${datas[2]},""" +
-                    """"btnReady": ${datas[3]},""" +
-                    """"btnGo": ${datas[4]}""" +
+                    """"btnSess": ${datas[0].toInt()},""" +
+                    """"btnPrep": ${datas[1].toInt()},""" +
+                    """"btnAVM:" ${datas[2].toInt()},""" +
+                    """"btnReady": ${datas[3].toInt()},""" +
+                    """"btnGo": ${datas[4].toInt()}""" +
+                    """"btnStop": ${datas[5].toInt()}""" +
                     "}"
             RequestType.USER_SELECT -> request += """"transfertRunner",""" +
                     """"data": {""" +

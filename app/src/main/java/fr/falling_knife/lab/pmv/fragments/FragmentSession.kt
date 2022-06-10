@@ -142,6 +142,8 @@ class FragmentSession : Fragment() {
                 rdButtonListener(rdBtns, it)
             }
 
+            rdBtns[i].isEnabled = i == 0
+
         }
 
     } // initRadioButtons
@@ -207,7 +209,9 @@ class FragmentSession : Fragment() {
         Toast.makeText(activity?.baseContext, "Préparation", Toast.LENGTH_SHORT).show()
 
         for(i in 0 until btnGest.count())
-            btnGest[i].isEnabled = i == 2
+            btnGest[i].isEnabled = i == 0 || i == 2
+
+        _listener.onSendCommand(DataSend(SendAction.BUTTON, arrayListOf("0", "1", "0", "0", "0", "0")))
 
     } // btnPreparationListener
 
@@ -216,7 +220,9 @@ class FragmentSession : Fragment() {
         Toast.makeText(activity?.baseContext, "À vos marques", Toast.LENGTH_SHORT).show()
 
         for(i in 0 until btnGest.count())
-            btnGest[i].isEnabled = i == 1 || i == 3
+            btnGest[i].isEnabled = i == 0 || i == 1 || i == 3
+
+        _listener.onSendCommand(DataSend(SendAction.BUTTON, arrayListOf("0", "0", "1", "0", "0", "0")))
 
     } // btnAVMListener
 
@@ -225,7 +231,9 @@ class FragmentSession : Fragment() {
         Toast.makeText(activity?.baseContext, "Prêt", Toast.LENGTH_SHORT).show()
 
         for(i in 0 until btnGest.count())
-            btnGest[i].isEnabled = i == 2 || i == 4
+            btnGest[i].isEnabled = i == 0 || i == 2 || i == 4
+
+        _listener.onSendCommand(DataSend(SendAction.BUTTON, arrayListOf("0", "0", "0", "1", "0", "0")))
 
     } // btnReadyListener
 
@@ -248,10 +256,12 @@ class FragmentSession : Fragment() {
                 )
             )
 
+            _listener.onSendCommand(DataSend(SendAction.BUTTON, arrayListOf("0", "0", "0", "0", "1", "0")))
+
         }else{
 
             for(i in 0 until btnGest.count())
-                btnGest[i].isEnabled = i == 1
+                btnGest[i].isEnabled = i == 0 || i == 1
 
             btnGest[4].text = resources.getText(R.string.btnGo)
             Toast.makeText(activity?.baseContext, "Arrêt de la course !", Toast.LENGTH_SHORT).show()
@@ -264,6 +274,8 @@ class FragmentSession : Fragment() {
                         R.color.light_red
                 )
             )
+
+            _listener.onSendCommand(DataSend(SendAction.BUTTON, arrayListOf("0", "0", "0", "0", "0", "1")))
 
         }
 
@@ -406,6 +418,7 @@ class FragmentSession : Fragment() {
             _rootView.findViewById<TextView>(resources.getIdentifier("txtWind${(id * 2) - 1}", "id", activity?.packageName)).text = session[i - 1][3]
             _rootView.findViewById<TextView>(resources.getIdentifier("txtSpeed${(id * 2) - 1}", "id", activity?.packageName)).text = session[i - 1][4]
 
+
             spinner = _rootView.findViewById(resources.getIdentifier("spinRun${id * 2}", "id", activity?.packageName))
             adapt = spinner.adapter as ArrayAdapter<String>
             spinner.setSelection(adapt.getPosition(session[i - 1][5]))
@@ -413,6 +426,11 @@ class FragmentSession : Fragment() {
             _rootView.findViewById<TextView>(resources.getIdentifier("txtWind${id * 2}", "id", activity?.packageName)).text = session[i - 1][7]
             _rootView.findViewById<TextView>(resources.getIdentifier("txtSpeed${id * 2}", "id", activity?.packageName)).text = session[i - 1][8]
 
+        }
+        val rdBtns: ArrayList<RadioButton> = getSelectButton(_rootView)
+
+        for(i in 0 until rdBtns.count()){
+            rdBtns[i].isEnabled = (i + 1) == session[session.count() - 1][0].toInt() || (i + 1) == (session[session.count() -1][0].toInt() + 1)
         }
 
     } // restoreSession
@@ -422,11 +440,12 @@ class FragmentSession : Fragment() {
         val btnGest = getGestBtns()
         val states = data as ArrayList<Int>
 
-        val firstIndex: Int = states.indexOfFirst{it == 1}
+        val index: Int = states.indexOf(1)
 
-        if(states[firstIndex + 2] == 1)
-            for(i in 0 until states.count())
-                btnGest[i].isEnabled = (i == firstIndex) or (i == firstIndex + 2)
+        for(i in 0 until states.count())
+            btnGest[i].isEnabled = (i == index - 1) or (i == index + 1)
+
+        btnGest[0].isEnabled = true
 
     } // controlButtons
 
@@ -457,5 +476,5 @@ class FragmentSession : Fragment() {
         fun onSendCommand(data: DataSend)
         fun onEndSession(settings: DataApp)
         fun onUpdateSession(type: ReceiveActions, data: ArrayList<Any>)
-    }
+    } // OnSessionManagement
 }
