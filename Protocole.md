@@ -169,6 +169,7 @@ Permet de transmettre les données pour le fichier CSV à la tablette (uni-direc
 Permet de vérifier les identifiants de connection (bi-directionnel)
 
 Cas Application vers Raspberry:
+
 ```json
 {
   "command": "authCheck",
@@ -180,6 +181,7 @@ Cas Application vers Raspberry:
 ```
 
 Cas Raspberry vers Application
+
 ```json
 {
   "command": "authCheck",
@@ -188,7 +190,6 @@ Cas Raspberry vers Application
   }
 }
 ```
-
 
 #### btnState
 
@@ -208,7 +209,6 @@ Permet de transmettre l'état des boutons lors d'une action
 }
 ```
 
-
 #### getControl
 
 Permet de reprendre la main en cas d'utilisation d'un périphérique de contrôle différent (bi-directionnel)
@@ -216,5 +216,15 @@ Permet de reprendre la main en cas d'utilisation d'un périphérique de contrôl
 ```json
 {
   "command": "getControl"
+}
+```
+
+#### endSession
+
+Permet d'indiquer à l'interface déportée la fin de la session (et donc la déconnexion du serveur)
+
+```json
+{
+  "command": "endSession"
 }
 ```
