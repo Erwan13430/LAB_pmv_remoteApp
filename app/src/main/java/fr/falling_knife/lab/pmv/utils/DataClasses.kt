@@ -4,7 +4,8 @@ data class DataApp(
     val login: String = "login",
     val password: String = "passwd",
     //val SERVER_ADDRESS: String = "10.3.141.1",
-    val SERVER_ADDRESS: String = "82.64.219.20",
+    //val SERVER_ADDRESS: String = "82.64.219.20",
+    val SERVER_ADDRESS: String = "192.168.1.26",
     val SERVER_PORT: Int = 2314,
     var message: String = "Nothing"
 )

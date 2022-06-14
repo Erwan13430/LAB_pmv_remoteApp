@@ -86,7 +86,7 @@ class FragmentSession : Fragment() {
 
 
             /* Initialisation des boutons de gestion */
-            btnStopSess.setOnClickListener { btnSelectListener(btnGest) }
+            btnStopSess.setOnClickListener { btnSelectListener() }
             btnPrep.setOnClickListener{ btnPreparationListener(btnGest) }
             btnAvm.setOnClickListener{ btnAVMListener(btnGest) }
             btnReady.setOnClickListener{ btnReadyListener(btnGest) }
@@ -95,7 +95,7 @@ class FragmentSession : Fragment() {
             btnControl.isVisible = false
 
             /* Récupération et initialisation des boutons radio */
-            val rdBtns: ArrayList<RadioButton> = getSelectButton(_rootView)
+            val rdBtns: ArrayList<RadioButton> = getSelectButton()
             initRadioButtons(rdBtns)
 
             /* Initialisation affichage initial de l'IHM */
@@ -156,23 +156,23 @@ class FragmentSession : Fragment() {
     /* --------------------------------------------- */
     /* Fonctions de récupération des listes d'objets */
     /* --------------------------------------------- */
-    private fun getSelectButton(view: View): ArrayList<RadioButton> {
+    private fun getSelectButton(): ArrayList<RadioButton> {
 
         val radios = arrayListOf<RadioButton>()
 
         for(i in 1..20 step 1)
-            radios.add(view.findViewById(resources.getIdentifier("rdBtn$i", "id", activity?.packageName)))
+            radios.add(_rootView.findViewById(resources.getIdentifier("rdBtn$i", "id", activity?.packageName)))
 
         return radios
 
     } // getSelectButton
 
-    private fun getSpinners(view: View): ArrayList<Spinner> {
+    private fun getSpinners(): ArrayList<Spinner> {
 
         val spinner = arrayListOf<Spinner>()
 
         for(i in 1..40 step 1)
-            spinner.add(view.findViewById(resources.getIdentifier("spinRun$i", "id", activity?.packageName)))
+            spinner.add(_rootView.findViewById(resources.getIdentifier("spinRun$i", "id", activity?.packageName)))
 
         return spinner
 
@@ -194,7 +194,7 @@ class FragmentSession : Fragment() {
     /* ------------------------------ */
     /* Fonctions listeners des objets */
     /* ------------------------------ */
-    private fun btnSelectListener(btnGest: ArrayList<Button>) {
+    private fun btnSelectListener() {
 
         Toast.makeText(activity?.baseContext, resources.getString(R.string.endSession), Toast.LENGTH_SHORT).show()
 
@@ -255,8 +255,8 @@ class FragmentSession : Fragment() {
 
             _listener.onSendCommand(DataSend(SendAction.BUTTON, arrayListOf("0", "0", "0", "0", "1", "0")))
 
-            val rdBtns = getSelectButton(_rootView)
-            val spinners = getSpinners(_rootView)
+            val rdBtns = getSelectButton()
+            val spinners = getSpinners()
             var id: Int = 0
 
             for(i in 0 until rdBtns.count())
@@ -321,13 +321,13 @@ class FragmentSession : Fragment() {
 
     private fun disableInterface(){
 
-        getSelectButton(_rootView).iterator().forEach {
+        getSelectButton().iterator().forEach {
 
             it.isEnabled = false
 
         }
 
-        getSpinners(_rootView).iterator().forEach {
+        getSpinners().iterator().forEach {
 
             it.isEnabled = false
 
@@ -363,13 +363,13 @@ class FragmentSession : Fragment() {
 
     private fun enableInterface(){
 
-        getSelectButton(_rootView).iterator().forEach {
+        getSelectButton().iterator().forEach {
 
             it.isEnabled = true
 
         }
 
-        getSpinners(_rootView).iterator().forEach {
+        getSpinners().iterator().forEach {
 
             it.isEnabled = true
 
@@ -409,7 +409,7 @@ class FragmentSession : Fragment() {
         Log.d("FrgSess::setRunnerList", "Session Name: ${runnersList[0]}")
         runnersList.removeAt(0)
         val arrayAdapter: ArrayAdapter<String> = ArrayAdapter<String>(_rootView.context, android.R.layout.simple_spinner_dropdown_item, runnersList)
-        initSpinners(getSpinners(_rootView), arrayAdapter)
+        initSpinners(getSpinners(), arrayAdapter)
 
     } // setRunnersList
 
@@ -437,16 +437,19 @@ class FragmentSession : Fragment() {
             _rootView.findViewById<TextView>(resources.getIdentifier("txtSpeed${id * 2}", "id", activity?.packageName)).text = session[i - 1][8]
 
         }
-        val rdBtns: ArrayList<RadioButton> = getSelectButton(_rootView)
-        val spinners: ArrayList<Spinner> = getSpinners(_rootView)
+        val rdBtns: ArrayList<RadioButton> = getSelectButton()
+        val spinners: ArrayList<Spinner> = getSpinners()
 
         for(i in 0 until rdBtns.count()){
             rdBtns[i].isEnabled = (i + 1) == session[session.count() - 1][0].toInt() || (i + 1) == (session[session.count() -1][0].toInt() + 1)
         }
 
+        rdBtns[session.count() - 1].isChecked = true
+
         for(i in 0 until spinners.count()){
-            spinners[i].isEnabled = (i + 1) == ((session[session.count() - 1][0].toInt() * 2) - 1) || (i + 1) == (session[session.count() - 1][0].toInt() * 2)
+            spinners[i].isEnabled = (i + 1) == (((session[session.count() - 1][0].toInt() + 1) * 2)) || (i + 1) == ((session[session.count() - 1][0].toInt() + 1) * 2 - 1)
         }
+
 
     } // restoreSession
 

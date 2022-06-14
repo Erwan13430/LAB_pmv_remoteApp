@@ -1,6 +1,7 @@
 package fr.falling_knife.lab.pmv
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import fr.falling_knife.lab.pmv.fragments.FragmentLogin
@@ -25,6 +26,7 @@ class MainActivity: AppCompatActivity(), FragmentLogin.OnCheckConnectionSettings
         var message = "Unable to connect to ${settings.SERVER_ADDRESS} Port=${settings.SERVER_PORT}"
         val response = _client.authenticate(settings)
         val authState = _protocol.decodeData(response)[0]
+        Log.d("MainAct::onCheckCS", "authState = $authState")
         if(authState == "authNoSess"){
             message = "The session is not started on ${settings.SERVER_ADDRESS}:${settings.SERVER_PORT}"
             _client.endSession()
@@ -36,8 +38,8 @@ class MainActivity: AppCompatActivity(), FragmentLogin.OnCheckConnectionSettings
         } else if(authState == "authFalse"){
             message = "Identifiant ou Mot de passe Incorrect"
             _client.endSession()
-        } else {
-            _client.endSession()
+        }else{
+            _client.closeSocket()
         }
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }

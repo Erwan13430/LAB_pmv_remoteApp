@@ -130,9 +130,17 @@ class TcpClient(activity: MainActivity) {
 
     fun endSession(){
         _end = true
-        _reader.close()
-        _writer.close()
+        runBlocking {
+            while(!_endThread)
+                delay(100)
+        }
+        _reader?.close()
+        _writer?.close()
+        closeSocket()
+    }
+
+    fun closeSocket(){
         _socket?.close()
-        Log.d("TcpClient::endSession", "Etat de fermeture socket: ${_socket?.isClosed}")
+        Log.d("TcpClient::closeSocket", "Etat de fermeture socket: ${_socket?.isClosed}")
     }
 }
